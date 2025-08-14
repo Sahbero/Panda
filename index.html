@@ -366,6 +366,30 @@
         const flashColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'];
         let touchMoveDirection = 0; // 0: yok, 1: sağ, -1: sol
 
+        // --- Ses Değişkenleri ---
+        let deathSound;
+        let mushroomSound;
+        let dragonSound;
+
+        // --- Ses Dosyalarını Yükleme Fonksiyonu ---
+        function loadSounds() {
+            // Karakter öldüğünde çalacak ses
+            deathSound = new Audio();
+            // Bu alana ses dosyasının GitHub URL'sini ekleyin
+            // Örneğin: deathSound.src = 'https://raw.githubusercontent.com/kullaniciadi/repoadi/main/death.mp3';
+            deathSound.src = 'ölüm.m4a'; 
+
+            // Mantar alındığında çalacak ses
+            mushroomSound = new Audio();
+            // Bu alana ses dosyasının GitHub URL'sini ekleyin
+            mushroomSound.src = 'mantar.m4a';
+
+            // Ejderha çıktığında çalacak ses
+            dragonSound = new Audio();
+            // Bu alana ses dosyasının GitHub URL'sini ekleyin
+            dragonSound.src = 'ejderha.m4a';
+        }
+
         // --- Bulut Oluşturma Fonksiyonu ---
         function createClouds() {
             clouds = [];
@@ -420,6 +444,12 @@
             dragon.image.src = 'data:image/svg+xml;base64,' + btoa(DRAGON_SVG);
             dragons.push(dragon);
             lastDragonSpawnScore = score;
+
+            // Ejderha ortaya çıktığında ses çal
+            if (dragonSound) {
+                dragonSound.currentTime = 0;
+                dragonSound.play();
+            }
         }
 
         function spawnFireball(dragon) {
@@ -641,6 +671,12 @@
         }
         
         function loseLife() {
+            // Can kaybettikçe ses çal
+            if (deathSound) {
+                deathSound.currentTime = 0;
+                deathSound.play();
+            }
+
             lives--;
             drawLives();
             if (lives <= 0) {
@@ -811,6 +847,12 @@
                     
                     activatePowerUp();
                     mushrooms.splice(i, 1);
+
+                    // Mantar alındığında ses çal
+                    if (mushroomSound) {
+                        mushroomSound.currentTime = 0;
+                        mushroomSound.play();
+                    }
                 }
                 
                 if (mushroom.y < -mushroom.height) {
@@ -903,6 +945,9 @@
             balloons = [];
             mushrooms = [];
             fireworks = [];
+            
+            // Sesleri yükle
+            loadSounds();
             
             createPlatforms();
             createClouds();
