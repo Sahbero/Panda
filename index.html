@@ -85,6 +85,12 @@
             margin-top: 20px;
             width: 480px;
         }
+        /* Masaüstü ekranlarda kontrol tuşlarını gizle */
+        @media (min-width: 769px) {
+            #controls {
+                display: none;
+            }
+        }
         .control-button {
             width: 80px;
             height: 80px;
@@ -336,6 +342,33 @@
         jumpButton.addEventListener('click', handleJump);
         jumpButton.addEventListener('touchend', handleJump);
         
+        // --- Klavye Kontrolleri ---
+        document.addEventListener('keydown', (e) => {
+            if (!isGameActive) return;
+            switch (e.code) {
+                case 'ArrowLeft':
+                    panda.velocityX = -5;
+                    break;
+                case 'ArrowRight':
+                    panda.velocityX = 5;
+                    break;
+                case 'ArrowUp':
+                case 'Space':
+                    handleJump();
+                    break;
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (!isGameActive) return;
+            switch (e.code) {
+                case 'ArrowLeft':
+                case 'ArrowRight':
+                    panda.velocityX = 0;
+                    break;
+            }
+        });
+
         // --- Oyunu Başlatma Mantığı ---
         function startCountdown() {
             startScreen.style.display = 'none';
@@ -351,8 +384,6 @@
                     clearInterval(countdownInterval);
                     countdownScreen.style.display = 'none';
                     isGameActive = true;
-                    // Oyun başladığında panda'yı en alttaki platforma yerleştirdik.
-                    // Bu sayede direkt düşmeyecek.
                     gameLoop();
                 }
             }, 1000);
