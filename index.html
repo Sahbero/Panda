@@ -1,0 +1,140 @@
+import pygame
+import random
+
+# --- Sabitler (Constants) ---
+SCREEN_WIDTH = 480
+SCREEN_HEIGHT = 640
+FPS = 60
+
+# --- Renkler (Colors) ---
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+PANDA_PINK = (255, 105, 180) # Panda rengi
+PLATFORM_BROWN = (139, 69, 19) # Platform rengi
+SKY_BLUE = (135, 206, 235) # Arkaplan rengi
+
+# --- Pygame Başlatma ---
+pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Sevimli Panda Atlayışı")
+clock = pygame.time.Clock()
+
+# --- Panda Sınıfı ---
+class Panda(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        # Panda görseli yerine şimdilik pembe bir dikdörtgen kullanıyoruz
+        self.image = pygame.Surface([30, 30])
+        self.image.fill(PANDA_PINK)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = SCREEN_WIDTH // 2
+        self.rect.bottom = SCREEN_HEIGHT - 20
+        
+        # Fizik değişkenleri
+        self.velocity_y = 0
+        self.gravity = 0.5
+        self.jump_strength = -12
+
+    def update(self):
+        # Yerçekimini uygula
+        self.velocity_y += self.gravity
+        self.rect.y += self.velocity_y
+        
+        # Panda ekranın altından düşerse oyun biter
+        if self.rect.top > SCREEN_HEIGHT:
+            # Buraya oyunun bitiş mantığı eklenecek
+            pass
+
+    def jump(self):
+        # Yukarı doğru zıplama
+        self.velocity_y = self.jump_strength
+
+# --- Platform Sınıfı ---
+class Platform(pygame.sprite.Sprite):
+    def __init__(self, x, y, width, height):
+        super().__init__()
+        # Platform görseli yerine kahverengi bir dikdörtgen
+        self.image = pygame.Surface([width, height])
+        self.image.fill(PLATFORM_BROWN)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+# --- Oyun Nesnelerini Oluşturma ---
+all_sprites = pygame.sprite.Group()
+platforms = pygame.sprite.Group()
+
+panda = Panda()
+all_sprites.add(panda)
+
+# İlk platformu oluştur
+platform_start = Platform(SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT - 50, 100, 20)
+platforms.add(platform_start)
+all_sprites.add(platform_start)
+
+# Ekranı dolduracak kadar platform oluştur
+for i in range(10):
+    last_platform = platforms.sprites()[-1]
+    new_platform_y = last_platform.rect.y - random.randrange(60, 100)
+    new_platform_x = random.randrange(0, SCREEN_WIDTH - 80)
+    new_platform = Platform(new_platform_x, new_platform_y, 80, 20)
+    platforms.add(new_platform)
+    all_sprites.add(new_platform)
+
+# --- Ana Oyun Döngüsü ---
+running = True
+while running:
+    clock.tick(FPS)
+    
+    # --- Girişleri İşleme (Olaylar) ---
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                # Zıplama tuşu
+                panda.jump()
+
+    # --- Güncelleme ---
+    all_sprites.update()
+    
+    # Platform çarpışmalarını kontrol et
+    # Panda düşerken platforma çarpıp çarpmadığını kontrol ediyoruz
+    if panda.velocity_y > 0:
+        hits = pygame.sprite.spritecollide(panda, platforms, False)
+        if hits:
+            # Panda platforma indiğinde düşüşü durdur
+            panda.velocity_y = 0
+            panda.rect.bottom = hits[0].rect.top
+            
+    # --- Ekran Kaydırma Mantığı ---
+    # Panda ekranın üst çeyreğine ulaştığında dünya aşağı kaymaya başlar
+    if panda.rect.top < SCREEN_HEIGHT / 4:
+        scroll_speed = (SCREEN_HEIGHT / 4) - panda.rect.top
+        panda.rect.y += scroll_speed
+        
+        # Tüm platformları aşağı kaydır
+        for platform in platforms:
+            platform.rect.y += scroll_speed
+            
+            # Ekranın dışına çıkan platformları kaldır
+            if platform.rect.top > SCREEN_HEIGHT:
+                platform.kill()
+                
+        # Yeni platformlar oluştur
+        while len(platforms) < 10:
+            last_platform = platforms.sprites()[-1]
+            new_platform_y = last_platform.rect.y - random.randrange(60, 100)
+            new_platform_x = random.randrange(0, SCREEN_WIDTH - 80)
+            new_platform = Platform(new_platform_x, new_platform_y, 80, 20)
+            platforms.add(new_platform)
+            all_sprites.add(new_platform)
+            
+    # --- Çizim (Render) ---
+    screen.fill(SKY_BLUE)
+    all_sprites.draw(screen)
+    
+    # --- Ekranı Güncelle ---
+    pygame.display.flip()
+
+pygame.quit()
