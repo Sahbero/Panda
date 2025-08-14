@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sosisli Platform Atlayışı</title>
+    <title>Yükselen Ateşten Kaçış</title>
+    <!-- Tailwind CSS for styling UI elements -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tone.js for robust audio management -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <style>
         body {
+            font-family: 'Inter', sans-serif;
             margin: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
-            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-            color: #333;
+            background-color: #1a202c;
+            color: white;
             overflow: hidden;
             user-select: none;
+            padding: 20px;
         }
         #gameContainer {
             position: relative;
@@ -25,6 +30,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             border-radius: 15px;
             overflow: hidden;
+            background-color: #2d3748;
         }
         canvas {
             display: block;
@@ -39,7 +45,7 @@
         #gameCanvas {
             z-index: 10;
         }
-        #characterSelectScreen, #countdownScreen, #gameOverScreen {
+        .screen-overlay {
             position: absolute;
             top: 0;
             left: 0;
@@ -49,14 +55,14 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(45, 55, 72, 0.95);
             z-index: 20;
             text-align: center;
         }
         #characterSelectScreen h1 {
             font-size: 2.5rem;
             margin-bottom: 30px;
-            color: #555;
+            color: #d1d5db;
         }
         #characterList {
             display: flex;
@@ -89,6 +95,7 @@
         .character-card h3 {
             margin-top: 10px;
             font-size: 1.2rem;
+            color: #d1d5db;
         }
         #startButton, #restartButton {
             padding: 15px 30px;
@@ -156,7 +163,7 @@
         }
         #final-score {
             font-size: 2rem;
-            color: #555;
+            color: #d1d5db;
             margin-bottom: 30px;
         }
         #controls {
@@ -219,7 +226,7 @@
         </div>
         
         <!-- Karakter Secim Ekrani -->
-        <div id="characterSelectScreen">
+        <div id="characterSelectScreen" class="screen-overlay" style="display: flex;">
             <h1>Karakterini Seç</h1>
             <div id="characterList">
                 <div class="character-card" data-character="panda">
@@ -227,8 +234,8 @@
                     <h3>Panda</h3>
                 </div>
                 <div class="character-card" data-character="rabbit">
-                    <img src="tavsan.png" alt="Tavsan" width="80" height="80" id="rabbit-image" onerror="this.onerror=null;this.src='https://placehold.co/80x80/FFC0CB/000?text=Tavsan';">
-                    <h3>Tavsan</h3>
+                    <img src="https://placehold.co/80x80/FFC0CB/000?text=Tavsan" alt="Tavsan" width="80" height="80">
+                    <h3>Tavşan</h3>
                 </div>
                 <div class="character-card" data-character="dragon">
                     <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.head{fill:#48c774;}.eyes{fill:yellow;}.horns{fill:#805a41;}.mouth{fill:#805a41;}</style><path class="head" d="M20 60 Q50 30, 80 60 L60 80 Q50 90, 40 80 Z"/><path class="horns" d="M30 40 L25 15 L35 25 Z"/><path class="horns" d="M70 40 L75 15 L65 25 Z"/><circle class="eyes" cx="40" cy="55" r="5"/><circle class="eyes" cx="60" cy="55" r="5"/><path class="mouth" d="M40 70 C45 75, 55 75, 60 70" fill="none" stroke="red" stroke-width="2"/></svg>
@@ -239,11 +246,11 @@
                     <h3>Koala</h3>
                 </div>
                 <div class="character-card" data-character="kelek">
-                    <img src="kelek.png" alt="Kelek" width="80" height="80" onerror="this.onerror=null;this.src='https://placehold.co/80x80/FF6347/FFF?text=Kelek';">
+                    <img src="https://placehold.co/80x80/FF6347/FFF?text=Kelek" alt="Kelek" width="80" height="80">
                     <h3>Kelek</h3>
                 </div>
                 <div class="character-card" data-character="zirzop">
-                    <img src="zırzop.png" alt="Zirzop" width="80" height="80" onerror="this.onerror=null;this.src='https://placehold.co/80x80/9370DB/FFF?text=Zirzop';">
+                    <img src="https://placehold.co/80x80/9370DB/FFF?text=Zirzop" alt="Zirzop" width="80" height="80">
                     <h3>Zirzop</h3>
                 </div>
             </div>
@@ -251,7 +258,7 @@
         </div>
 
         <!-- Geri Sayim Ekrani -->
-        <div id="countdownScreen">
+        <div id="countdownScreen" class="screen-overlay">
             <p id="countdownDisplay"></p>
         </div>
 
@@ -259,7 +266,7 @@
         <div id="celebrationMessage"></div>
 
         <!-- Oyun Bitti Ekrani -->
-        <div id="gameOverScreen">
+        <div id="gameOverScreen" class="screen-overlay">
             <p>Oyun Bitti!</p>
             <p id="final-score"></p>
             <button id="restartButton">Tekrar Dene</button>
@@ -307,35 +314,23 @@
         ];
 
         // --- Görsel Veriler (SVG ve Resim URL'leri) ---
-        // Sosisli platform görseli
         const HOTDOG_SVG = `<svg viewBox="0 0 100 25" xmlns="http://www.w3.org/2000/svg">
-            <!-- Sosis -->
             <rect x="5" y="5" width="90" height="15" rx="7.5" ry="7.5" fill="#e55347"/>
-            <!-- Ekmeğin alt kısmı -->
             <path d="M5 15 C25 25, 75 25, 95 15" fill="#d4a373"/>
-            <!-- Ekmeğin üst kısmı -->
             <path d="M5 15 C25 5, 75 5, 95 15" fill="#fefae0"/>
-            <!-- Hardal -->
             <path d="M15 10 Q25 8, 35 10 Q45 12, 55 10 Q65 8, 75 10" stroke="#ffc107" stroke-width="2" fill="none"/>
         </svg>`;
         const CLOUD_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M10 50 A20 20 0 0 1 30 30 A25 25 0 0 1 70 30 A20 20 0 0 1 90 50 A15 15 0 0 1 75 60 L25 60 A15 15 0 0 1 10 50 Z" fill="white" fill-opacity="0.7"/></svg>`;
         const HEART_SVG = `<svg class="heart-svg" viewBox="0 0 24 24" fill="red" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
-        // Güncellenmiş ejderha SVG'si, daha büyük ve vücut detayı eklenmiş
         const DRAGON_SVG_FULL = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <style>
                 .head{fill:#48c774;}.body{fill:#60e08b;}.eyes{fill:yellow;}.horns{fill:#805a41;}.mouth{fill:red;}
             </style>
-            <!-- Vücut (daha büyük) -->
             <path class="body" d="M-10 100 Q40 50, 70 80 Q50 90, 30 90 Q-10 90, -10 100 Z"/>
-            <!-- Kafa -->
             <path class="head" d="M50 70 Q70 50, 90 70 L80 90 Q70 100, 60 90 Z"/>
-            <!-- Boynuzlar -->
             <path class="horns" d="M60 50 L55 25 L65 35 Z"/>
             <path class="horns" d="M80 50 L85 25 L75 35 Z"/>
-            <!-- Gözler -->
-            <circle class="eyes" cx="68" cy="65" r="5"/>
-            <circle class="eyes" cx="82" cy="65" r="5"/>
-            <!-- Ağız -->
+            <circle class="eyes" cx="68" cy="65" r="5"/><circle class="eyes" cx="82" cy="65" r="5"/>
             <path class="mouth" d="M65 80 C70 85, 85 85, 90 80" fill="none" stroke="red" stroke-width="2"/>
         </svg>`;
         const MUSHROOM_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.stem{fill:#fff}.cap{fill:#c00}.dots{fill:#fff}</style><rect class="stem" x="40" y="55" width="20" height="40"/><path class="cap" d="M20 55 C20 20, 80 20, 80 55 Z"/><circle class="dots" cx="35" cy="40" r="5"/><circle class="dots" cx="65" cy="40" r="5"/><circle class="dots" cx="50" cy="30" r="5"/></svg>`;
@@ -359,8 +354,7 @@
             ),
             rabbit: (() => {
                 const img = new Image();
-                img.src = 'tavsan.png';
-                img.onerror = () => img.src = 'https://placehold.co/80x80/FFC0CB/000?text=Tavsan';
+                img.src = 'https://placehold.co/80x80/FFC0CB/000?text=Tavsan';
                 return img;
             })(),
             dragon: loadSvgAsImage(
@@ -371,18 +365,15 @@
             ),
             kelek: (() => {
                 const img = new Image();
-                img.src = 'kelek.png';
-                img.onerror = () => img.src = 'https://placehold.co/80x80/FF6347/FFF?text=Kelek';
+                img.src = 'https://placehold.co/80x80/FF6347/FFF?text=Kelek';
                 return img;
             })(),
             zirzop: (() => {
                 const img = new Image();
-                img.src = 'zırzop.png';
-                img.onerror = () => img.src = 'https://placehold.co/80x80/9370DB/FFF?text=Zirzop';
+                img.src = 'https://placehold.co/80x80/9370DB/FFF?text=Zirzop';
                 return img;
             })()
         };
-
 
         // --- Oyun Durum Yönetimi ---
         let gameState = 'SELECT_CHARACTER';
@@ -421,13 +412,70 @@
         let flashColorIndex = 0;
         const flashColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'];
         let touchMoveDirection = 0;
-        let backgroundMusic;
+
+        // Ses değişkenleri
+        let isAudioContextReady = false;
+        let jumpSynth, collisionSynth, gameOverSynth, backgroundMusic;
+
+        // Yükselen ateş ile ilgili değişkenler
+        let fireY = GAME_HEIGHT; // Ateşin başlangıç y koordinatı (ekranın altında)
+        let fireSpeed = 0.5; // Ateşin yükselme hızı
+        let gameStartTime = 0;
+        const FIRE_START_DELAY = 5000; // Ateşin başlaması için 5 saniye bekleme
+
+        // --- Ses Setup Fonksiyonu ---
+        function setupAudio() {
+            if (!isAudioContextReady) {
+                Tone.start().then(() => {
+                    // Sentezleyici ayarları
+                    jumpSynth = new Tone.Synth({
+                        oscillator: { type: "triangle" },
+                        envelope: { attack: 0.01, decay: 0.1, sustain: 0.05, release: 0.1 }
+                    }).toDestination();
+                    collisionSynth = new Tone.Synth({
+                        oscillator: { type: "square" },
+                        envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.1 }
+                    }).toDestination();
+                    gameOverSynth = new Tone.Synth({
+                        oscillator: { type: "sine" },
+                        envelope: { attack: 0.1, decay: 0.5, sustain: 0.1, release: 0.5 }
+                    }).toDestination();
+
+                    // Arkaplan müziği
+                    backgroundMusic = new Tone.PolySynth().toDestination();
+                    backgroundMusic.volume.value = -12; // Müziğin sesini düşür
+                    const musicPart = new Tone.Part((time, note) => {
+                        backgroundMusic.triggerAttackRelease(note, "8n", time);
+                    }, [
+                        ["0:0:0", "C4"], ["0:0:2", "E4"], ["0:1:0", "G4"], ["0:1:2", "E4"],
+                        ["0:2:0", "C4"], ["0:2:2", "E4"], ["0:3:0", "G4"], ["0:3:2", "E4"]
+                    ]).start(0);
+                    musicPart.loop = true;
+                    musicPart.loopEnd = "1m";
+
+                    isAudioContextReady = true;
+                    console.log("Audio context started.");
+                }).catch(e => {
+                    console.error("Failed to start audio context:", e);
+                });
+            }
+        }
         
-        // --- Ses Dosyalarını Yükleme Fonksiyonu ---
-        function loadSounds() {
-            backgroundMusic = new Audio();
-            backgroundMusic.loop = true;
-            backgroundMusic.src = 'sound.mp3';
+        // --- Ses Çalma Fonksiyonları ---
+        function playJumpSound() {
+            if (isAudioContextReady) {
+                jumpSynth.triggerAttackRelease("G4", "16n");
+            }
+        }
+        function playCollisionSound() {
+            if (isAudioContextReady) {
+                collisionSynth.triggerAttackRelease("A3", "32n");
+            }
+        }
+        function playGameOverSound() {
+            if (isAudioContextReady) {
+                gameOverSynth.triggerAttackRelease("C2", "1n");
+            }
         }
 
         // --- Bulut Oluşturma Fonksiyonu ---
@@ -632,10 +680,20 @@
                 fxCtx.fillStyle = particle.color;
                 fxCtx.globalAlpha = particle.alpha;
                 fxCtx.beginPath();
-                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                fxCtx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
                 fxCtx.fill();
             });
             fxCtx.globalAlpha = 1;
+        }
+
+        // Yükselen ateşi çizme fonksiyonu
+        function drawFire() {
+            const gradient = ctx.createLinearGradient(0, fireY, 0, GAME_HEIGHT);
+            gradient.addColorStop(0, 'rgba(255, 0, 0, 0.6)');
+            gradient.addColorStop(0.5, 'rgba(255, 165, 0, 0.5)');
+            gradient.addColorStop(1, 'rgba(255, 255, 0, 0.3)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, fireY, GAME_WIDTH, GAME_HEIGHT - fireY);
         }
 
         function drawBackground() {
@@ -668,11 +726,6 @@
             celebrationMessage.style.animation = 'bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.27) forwards, fadeOut 0.5s 1.5s forwards';
             
             createFireworks();
-            
-            setTimeout(() => {
-                celebrationMessage.style.display = 'none';
-                celebrationMessage.style.animation = '';
-            }, 2000);
         }
 
         function activatePowerUp() {
@@ -699,13 +752,18 @@
             gameOverScreen.style.display = 'flex';
             finalScoreDisplay.innerText = `Son Puanınız: ${score}`;
             
-            if (backgroundMusic) {
-                backgroundMusic.pause();
+            if (isAudioContextReady) {
+                playGameOverSound();
+                // Tone.js sesini durdurma
+                Tone.Transport.stop();
             }
         }
         
         function loseLife() {
             lives--;
+            if (isAudioContextReady) {
+                playCollisionSound();
+            }
             drawLives();
             if (lives <= 0) {
                 showGameOverScreen();
@@ -734,6 +792,7 @@
             if (character.x < 0) character.x = 0;
             if (character.x + character.width > GAME_WIDTH) character.x = GAME_WIDTH - character.width;
 
+            // Karakterin platformlarla çarpışması
             platforms.forEach(platform => {
                 if (character.velocityY > 0 &&
                     character.y + character.height >= platform.y &&
@@ -747,6 +806,12 @@
                 }
             });
 
+            // Yükselen ateş ile çarpışma kontrolü
+            if (Date.now() - gameStartTime > FIRE_START_DELAY && character.y + character.height >= fireY) {
+                loseLife();
+            }
+
+            // Ekranı yukarı kaydırma
             if (character.y < GAME_HEIGHT / 4) {
                 const scrollSpeed = GAME_HEIGHT / 4 - character.y;
                 character.y += scrollSpeed;
@@ -765,6 +830,7 @@
                 });
             }
             
+            // Platform döngüsü
             if (platforms.length > 0 && platforms[0].y > GAME_HEIGHT) {
                 platforms.shift();
                 score += 1;
@@ -782,6 +848,7 @@
                 platforms.push({ x: newX, y: newY, width: 80, height: 20 });
             }
             
+            // Bulut döngüsü
             if (clouds.length > 0 && clouds[0].y > GAME_HEIGHT) {
                 clouds.shift();
                 clouds.push({
@@ -792,21 +859,21 @@
                 });
             }
 
+            // Ekranın altına düşme kontrolü
             if (character.y > GAME_HEIGHT) {
                 loseLife();
             }
 
+            // Ejderha ve ateş topu mantığı
             if (score > 0 && score % 30 === 0 && score !== lastDragonSpawnScore) {
                 spawnDragon();
             }
             
             for (let i = dragons.length - 1; i >= 0; i--) {
                 const dragon = dragons[i];
-                
-                // Ejderhanın y pozisyonunu güncelle (yukarı doğru uçması için)
                 dragon.y += dragon.velocityY;
 
-                if (dragon.y < -dragon.height) { // Ejderha ekranın üstünden çıktıysa sil
+                if (dragon.y < -dragon.height) { 
                     dragons.splice(i, 1);
                     continue;
                 }
@@ -835,6 +902,7 @@
                 }
             }
 
+            // Balonlar
             if (score > 0 && score % 50 === 0 && score !== lastBalloonsSpawnScore) {
                 spawnBalloons();
                 lastBalloonsSpawnScore = score;
@@ -850,6 +918,7 @@
                 }
             }
             
+            // Mantar
             if (score >= nextMushroomSpawnScore && score > lastMushroomSpawnScore) {
                 spawnMushroom();
             }
@@ -872,6 +941,7 @@
                 }
             }
 
+            // Havai fişekler
             for (let i = fireworks.length - 1; i >= 0; i--) {
                 const p = fireworks[i];
                 p.x += p.velocityX;
@@ -882,6 +952,11 @@
                 if (p.alpha <= 0) {
                     fireworks.splice(i, 1);
                 }
+            }
+
+            // Yükselen ateş mantığı
+            if (Date.now() - gameStartTime > FIRE_START_DELAY) {
+                fireY -= fireSpeed;
             }
         }
         
@@ -901,6 +976,10 @@
             dragons.forEach(dragon => drawDragon(dragon));
             drawFireballs();
             drawCharacter();
+            
+            // Ateşi diğer her şeyden sonra çiz ki karakterin üstünde kalmasın
+            drawFire();
+            
             drawScore();
             drawLives();
             drawFireworks();
@@ -941,7 +1020,9 @@
             mushrooms = [];
             fireworks = [];
             
-            loadSounds();
+            // Ateş değişkenlerini sıfırla
+            fireY = GAME_HEIGHT;
+            gameStartTime = 0;
             
             createPlatforms();
             createClouds();
@@ -958,13 +1039,11 @@
         }
 
         // --- Kontrol Olay Dinleyicileri ---
-        const handleLeft = () => { if (gameState === 'PLAYING') character.velocityX = -1; };
-        const handleRight = () => { if (gameState === 'PLAYING') character.velocityX = 1; };
-        const handleStop = () => { if (gameState === 'PLAYING') character.velocityX = 0; };
         const handleJump = () => {
             if (gameState === 'PLAYING' && !character.isJumping) {
                 character.velocityY = character.jumpStrength;
                 character.isJumping = true;
+                playJumpSound();
             }
         };
 
@@ -1037,8 +1116,10 @@
                     gameInfo.style.display = 'flex';
                     drawLives();
                     drawScore();
-                    if (backgroundMusic) {
-                        backgroundMusic.play();
+                    gameStartTime = Date.now();
+                    
+                    if (isAudioContextReady) {
+                        Tone.Transport.start(); // Sesleri çalmaya başla
                     }
                     gameLoop();
                 }
@@ -1046,6 +1127,7 @@
         }
 
         startButton.addEventListener('click', () => {
+            setupAudio(); // Ses bağlamını kullanıcı etkileşimiyle başlat
             if (selectedCharacter) {
                 initGame();
                 setCharacterImage(selectedCharacter);
@@ -1053,6 +1135,7 @@
         });
         
         restartButton.addEventListener('click', () => {
+            setupAudio(); // Ses bağlamını kullanıcı etkileşimiyle başlat
             initGame();
         });
         
