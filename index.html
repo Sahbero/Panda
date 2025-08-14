@@ -423,24 +423,33 @@
         let touchMoveDirection = 0;
         let backgroundMusic;
         
- // --- Ses Degiskenleri ---
+       // --- Ses Değişkenleri ---
         let deathSound;
         let mushroomSound;
         let dragonSound;
-        let backgroundMusic;
+        let backgroundMusic; // Arka plan müziği için yeni değişken
 
-        // --- Ses Dosyalarini Yukleme Fonksiyonu ---
+        // --- Ses Dosyalarını Yükleme Fonksiyonu ---
         function loadSounds() {
+            // Karakter öldüğünde çalacak ses
             deathSound = new Audio();
             deathSound.src = 'ölüm.m4a'; 
+
+            // Mantar alındığında çalacak ses
             mushroomSound = new Audio();
             mushroomSound.src = 'mantar.m4a';
+
+            // Ejderha çıktığında çalacak ses
             dragonSound = new Audio();
             dragonSound.src = 'ejderha.m4a';
+            
+            // --- Arka plan müziği ---
             backgroundMusic = new Audio();
-            backgroundMusic.loop = true;
+            backgroundMusic.loop = true; // Müziğin sürekli tekrar etmesi için
+            // Bu alana arka plan müziği dosyasının GitHub "Raw" (Ham) URL'sini ekleyin
             backgroundMusic.src = 'sound.mp3';
         }
+        
         // --- Bulut Oluşturma Fonksiyonu ---
         function createClouds() {
             clouds = [];
@@ -540,6 +549,13 @@
             mushrooms.push(mushroom);
             lastMushroomSpawnScore = score;
             nextMushroomSpawnScore = score + Math.floor(Math.random() * 11) + 30;
+        }
+
+         // Ejderha ortaya çıktığında ses çal
+            if (dragonSound) {
+                dragonSound.currentTime = 0;
+                dragonSound.play();
+            }
         }
         
         // Havai fişek oluşturma fonksiyonu
@@ -729,6 +745,12 @@
             }
         }
         
+          // Can kaybettikçe ses çal
+            if (deathSound) {
+                deathSound.currentTime = 0;
+                deathSound.play();
+            }
+        
         // --- Oyun Mantığı Güncelleme ---
         function update() {
             const moveSpeed = isSpeedBoostActive ? character.baseSpeed * 2 : character.baseSpeed;
@@ -882,6 +904,18 @@
                     mushrooms.splice(i, 1);
                 }
             }
+             // Mantar alındığında ses çal
+                    if (mushroomSound) {
+                        mushroomSound.currentTime = 0;
+                        mushroomSound.play();
+                    }
+                }
+                
+                if (mushroom.y < -mushroom.height) {
+                    mushrooms.splice(i, 1);
+                }
+            }
+
 
             for (let i = fireworks.length - 1; i >= 0; i--) {
                 const p = fireworks[i];
