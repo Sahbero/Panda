@@ -229,7 +229,7 @@
                 </div>
                 <div class="character-card" data-character="rabbit">
                     <!-- Tavşan görseli artık SVG yerine bir resim URL'si ile yükleniyor. -->
-                    <img src="https://placehold.co/80x80/FFC0CB/000?text=Rabbit" alt="Tavşan" width="80" height="80" id="rabbit-image">
+                    <img src="tavsan.png" alt="Tavşan" width="80" height="80" id="rabbit-image">
                     <h3>Tavşan</h3>
                 </div>
                 <div class="character-card" data-character="dragon">
@@ -244,12 +244,12 @@
                 </div>
                 <!-- Yeni karakter: Kelek -->
                 <div class="character-card" data-character="kelek">
-                    <img src="https://placehold.co/80x80/FF6347/FFF?text=Kelek" alt="Kelek" width="80" height="80">
+                    <img src="kelek.png" alt="Kelek" width="80" height="80">
                     <h3>Kelek</h3>
                 </div>
                 <!-- Yeni karakter: Zırzop -->
                 <div class="character-card" data-character="zirzop">
-                    <img src="https://placehold.co/80x80/9370DB/FFF?text=Zırzop" alt="Zırzop" width="80" height="80">
+                    <img src="zırzop.png" alt="Zırzop" width="80" height="80">
                     <h3>Zırzop</h3>
                 </div>
             </div>
@@ -321,11 +321,11 @@
 
         const CHARACTERS = {
             panda: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#2b2b2b;}.face{fill:#ffffff;}.eyes{fill:#2b2b2b;}.nose{fill:#2b2b2b;}</style><circle class="ears" cx="25" cy="25" r="20"/><circle class="ears" cx="75" cy="25" r="20"/><circle class="face" cx="50" cy="50" r="40"/><circle class="eyes" cx="35" cy="45" r="8"/><circle class="eyes" cx="65" cy="45" r="8"/><path class="nose" d="M50 58 C45 62, 55 62, 50 58 M45 60 Q50 65, 55 60 T50 60"/></svg>`,
-            rabbit: 'https://placehold.co/80x80/FFC0CB/000?text=Rabbit',
+            rabbit: 'tavsan.png',
             dragon: DRAGON_SVG,
             koala: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#7a7a7a;}.face{fill:#c2c2c2;}.eyes{fill:#333;}.nose{fill:#333;}</style><circle class="ears" cx="20" cy="20" r="20"/><circle class="ears" cx="80" cy="20" r="20"/><path class="face" d="M50 40 C20 40, 20 80, 50 80 C80 80, 80 40, 50 40 Z"/><circle class="eyes" cx="38" cy="50" r="6"/><circle class="eyes" cx="62" cy="50" r="6"/><path class="nose" d="M50 65 C45 68, 55 68, 50 65"/></svg>`,
-            kelek: 'https://placehold.co/80x80/FF6347/FFF?text=Kelek',
-            zirzop: 'https://placehold.co/80x80/9370DB/FFF?text=Zırzop'
+            kelek: 'kelek.png',
+            zirzop: 'zırzop.png'
         };
 
         // --- Oyun Durum Yönetimi ---
