@@ -423,13 +423,24 @@
         let touchMoveDirection = 0;
         let backgroundMusic;
         
-        // --- Ses Dosyalarını Yükleme Fonksiyonu ---
+ // --- Ses Degiskenleri ---
+        let deathSound;
+        let mushroomSound;
+        let dragonSound;
+        let backgroundMusic;
+
+        // --- Ses Dosyalarini Yukleme Fonksiyonu ---
         function loadSounds() {
+            deathSound = new Audio();
+            deathSound.src = 'ölüm.m4a'; 
+            mushroomSound = new Audio();
+            mushroomSound.src = 'mantar.m4a';
+            dragonSound = new Audio();
+            dragonSound.src = 'ejderha.m4a';
             backgroundMusic = new Audio();
             backgroundMusic.loop = true;
             backgroundMusic.src = 'sound.mp3';
         }
-
         // --- Bulut Oluşturma Fonksiyonu ---
         function createClouds() {
             clouds = [];
