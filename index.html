@@ -29,7 +29,7 @@
         canvas {
             display: block;
         }
-        #startScreen, #countdownScreen {
+        #characterSelectScreen, #startScreen, #countdownScreen {
             position: absolute;
             top: 0;
             left: 0;
@@ -39,14 +39,45 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             z-index: 10;
             text-align: center;
         }
-        #startScreen h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
+        #characterSelectScreen h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
             color: #555;
+        }
+        #characterList {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .character-card {
+            width: 100px;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border: 3px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .character-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .character-card.selected {
+            border-color: #FF69B4; /* Seçili karakteri vurgular */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .character-card h3 {
+            margin-top: 10px;
+            font-size: 1.2rem;
         }
         #startButton {
             padding: 15px 30px;
@@ -77,6 +108,22 @@
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             z-index: 5;
+        }
+        #celebrationMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 2rem;
+            color: #FF69B4;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+            display: none;
+            animation: fadeinout 2s forwards;
         }
         #controls {
             display: flex;
@@ -117,20 +164,53 @@
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
+        @keyframes fadeinout {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
     <div id="gameContainer">
         <canvas id="gameCanvas" width="480" height="640"></canvas>
         <div id="game-info">Puan: 0</div>
-        <div id="startScreen">
-            <h1>Sevimli Panda Atlayışı</h1>
-            <button id="startButton">Oyuna Başla</button>
+        
+        <!-- Karakter Seçim Ekranı -->
+        <div id="characterSelectScreen">
+            <h1>Karakterini Seç</h1>
+            <div id="characterList">
+                <div class="character-card" data-character="panda">
+                    <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#333}.face{fill:white}.eyes{fill:#333}.nose{fill:#333}</style><circle class="ears" cx="25" cy="25" r="20"/><circle class="ears" cx="75" cy="25" r="20"/><circle class="face" cx="50" cy="50" r="40"/><circle class="eyes" cx="35" cy="40" r="8"/><circle class="eyes" cx="65" cy="40" r="8"/><path class="nose" d="M50 55 C45 60, 55 60, 50 55"/></svg>
+                    <h3>Panda</h3>
+                </div>
+                <div class="character-card" data-character="rabbit">
+                    <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#999}.face{fill:white}.eyes{fill:#333}.nose{fill:pink}</style><path class="ears" d="M20 10 C20 0, 30 0, 30 10 Q25 15, 20 10 Z"/><path class="ears" d="M70 10 C70 0, 80 0, 80 10 Q75 15, 70 10 Z"/><circle class="face" cx="50" cy="60" r="40"/><circle class="eyes" cx="35" cy="50" r="8"/><circle class="eyes" cx="65" cy="50" r="8"/><path class="nose" d="M50 65 Q45 70, 55 70 T50 65"/></svg>
+                    <h3>Tavşan</h3>
+                </div>
+                <div class="character-card" data-character="dragon">
+                    <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.head{fill:#4CAF50}.eyes{fill:yellow}.horns{fill:brown}</style><path class="head" d="M20 60 Q50 30, 80 60 L60 80 Q50 90, 40 80 Z"/><path class="horns" d="M30 40 L25 15 L35 25 Z"/><path class="horns" d="M70 40 L75 15 L65 25 Z"/><circle class="eyes" cx="40" cy="55" r="5"/><circle class="eyes" cx="60" cy="55" r="5"/></svg>
+                    <h3>Ejderha</h3>
+                </div>
+                <div class="character-card" data-character="koala">
+                    <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:gray}.face{fill:lightgray}.eyes{fill:#333}.nose{fill:black}</style><circle class="ears" cx="20" cy="20" r="20"/><circle class="ears" cx="80" cy="20" r="20"/><path class="face" d="M50 40 C20 40, 20 80, 50 80 C80 80, 80 40, 50 40 Z"/><circle class="eyes" cx="38" cy="50" r="6"/><circle class="eyes" cx="62" cy="50" r="6"/><path class="nose" d="M50 65 C45 68, 55 68, 50 65"/></svg>
+                    <h3>Koala</h3>
+                </div>
+            </div>
+            <button id="startButton" style="display: none;">Oyuna Başla</button>
         </div>
+
+        <!-- Geri Sayım Ekranı -->
         <div id="countdownScreen" style="display: none;">
             <p id="countdownDisplay"></p>
         </div>
+
+        <!-- Kutlama Mesajı Ekranı -->
+        <div id="celebrationMessage">Tebrikler!</div>
     </div>
+    
+    <!-- Mobil Kontrol Tuşları -->
     <div id="controls">
         <button id="leftButton" class="control-button left">◀</button>
         <button id="jumpButton" class="control-button up">▲</button>
@@ -144,31 +224,25 @@
         const GAME_WIDTH = canvas.width;
         const GAME_HEIGHT = canvas.height;
         const INFO_DISPLAY = document.getElementById('game-info');
-        const startScreen = document.getElementById('startScreen');
+        const characterSelectScreen = document.getElementById('characterSelectScreen');
+        const characterCards = document.querySelectorAll('.character-card');
         const startButton = document.getElementById('startButton');
         const countdownScreen = document.getElementById('countdownScreen');
         const countdownDisplay = document.getElementById('countdownDisplay');
+        const celebrationMessage = document.getElementById('celebrationMessage');
         const leftButton = document.getElementById('leftButton');
         const jumpButton = document.getElementById('jumpButton');
         const rightButton = document.getElementById('rightButton');
 
-        // --- Renkler ve Görsel Veriler ---
+        // --- Görsel Veriler (SVG) ---
         const PLATFORM_COLOR = 'rgb(139, 69, 19)';
         const WOOD_GRAIN_COLOR = 'rgba(100, 50, 10, 0.5)';
-        const PANDA_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <style>
-                .ears { fill: #333; }
-                .face { fill: white; }
-                .eyes { fill: #333; }
-                .nose { fill: #333; }
-            </style>
-            <circle class="ears" cx="25" cy="25" r="20"/>
-            <circle class="ears" cx="75" cy="25" r="20"/>
-            <circle class="face" cx="50" cy="50" r="40"/>
-            <circle class="eyes" cx="35" cy="40" r="8"/>
-            <circle class="eyes" cx="65" cy="40" r="8"/>
-            <path class="nose" d="M50 55 C45 60, 55 60, 50 55"/>
-        </svg>`;
+        const CHARACTERS = {
+            panda: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#333}.face{fill:white}.eyes{fill:#333}.nose{fill:#333}</style><circle class="ears" cx="25" cy="25" r="20"/><circle class="ears" cx="75" cy="25" r="20"/><circle class="face" cx="50" cy="50" r="40"/><circle class="eyes" cx="35" cy="40" r="8"/><circle class="eyes" cx="65" cy="40" r="8"/><path class="nose" d="M50 55 C45 60, 55 60, 50 55"/></svg>`,
+            rabbit: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#999}.face{fill:white}.eyes{fill:#333}.nose{fill:pink}</style><path class="ears" d="M20 10 C20 0, 30 0, 30 10 Q25 15, 20 10 Z"/><path class="ears" d="M70 10 C70 0, 80 0, 80 10 Q75 15, 70 10 Z"/><circle class="face" cx="50" cy="60" r="40"/><circle class="eyes" cx="35" cy="50" r="8"/><circle class="eyes" cx="65" cy="50" r="8"/><path class="nose" d="M50 65 Q45 70, 55 70 T50 65"/></svg>`,
+            dragon: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.head{fill:#4CAF50}.eyes{fill:yellow}.horns{fill:brown}</style><path class="head" d="M20 60 Q50 30, 80 60 L60 80 Q50 90, 40 80 Z"/><path class="horns" d="M30 40 L25 15 L35 25 Z"/><path class="horns" d="M70 40 L75 15 L65 25 Z"/><circle class="eyes" cx="40" cy="55" r="5"/><circle class="eyes" cx="60" cy="55" r="5"/></svg>`,
+            koala: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:gray}.face{fill:lightgray}.eyes{fill:#333}.nose{fill:black}</style><circle class="ears" cx="20" cy="20" r="20"/><circle class="ears" cx="80" cy="20" r="20"/><path class="face" d="M50 40 C20 40, 20 80, 50 80 C80 80, 80 40, 50 40 Z"/><circle class="eyes" cx="38" cy="50" r="6"/><circle class="eyes" cx="62" cy="50" r="6"/><path class="nose" d="M50 65 C45 68, 55 68, 50 65"/></svg>`
+        };
 
         // --- Oyun Değişkenleri ---
         let panda = {
@@ -180,22 +254,22 @@
             velocityY: 0,
             gravity: 0.5,
             jumpStrength: -12,
-            isJumping: false
+            isJumping: false,
+            svg: ''
         };
 
         let platforms = [];
         let score = 0;
+        let lastCelebrationScore = 0;
         let isGameActive = false;
 
         // --- Platform Oluşturma Fonksiyonu ---
         function createPlatforms() {
             platforms = []; // Her başlatmada platformları sıfırla
             
-            // İlk platform, panda'nın başlangıç noktası
             const initialPlatform = { x: GAME_WIDTH / 2 - 50, y: GAME_HEIGHT - 50, width: 100, height: 20 };
             platforms.push(initialPlatform);
 
-            // Panda'nın başlangıç pozisyonunu ilk platforma ayarla
             panda.x = initialPlatform.x + (initialPlatform.width / 2) - (panda.width / 2);
             panda.y = initialPlatform.y - panda.height;
 
@@ -210,18 +284,16 @@
         // --- Çizim Fonksiyonları ---
         function drawPanda() {
             const pandaImg = new Image();
-            // Panda SVG'sini base64 veri URI'sına dönüştürerek çizdiriyoruz
-            pandaImg.src = 'data:image/svg+xml;base64,' + btoa(PANDA_SVG);
+            // Seçilen karakter SVG'sini base64 veri URI'sına dönüştürüp çizdiriyoruz
+            pandaImg.src = 'data:image/svg+xml;base64,' + btoa(panda.svg);
             ctx.drawImage(pandaImg, panda.x, panda.y, panda.width, panda.height);
         }
 
         function drawPlatforms() {
             platforms.forEach(platform => {
-                // Ahşap kalas efekti için
                 ctx.fillStyle = PLATFORM_COLOR;
                 ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
 
-                // Hafif çizgilerle odun dokusu ekleme
                 ctx.strokeStyle = WOOD_GRAIN_COLOR;
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -236,8 +308,8 @@
 
         function drawBackground() {
             const gradient = ctx.createLinearGradient(0, GAME_HEIGHT, 0, 0);
-            gradient.addColorStop(0, '#87CEEB'); // Altta açık mavi
-            gradient.addColorStop(1, '#00008B'); // Üstte lacivert
+            gradient.addColorStop(0, '#87CEEB');
+            gradient.addColorStop(1, '#00008B');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         }
@@ -246,22 +318,26 @@
             INFO_DISPLAY.innerText = `Puan: ${score}`;
         }
 
+        function showCelebrationMessage() {
+            celebrationMessage.style.display = 'block';
+            setTimeout(() => {
+                celebrationMessage.style.display = 'none';
+            }, 2000); // 2 saniye sonra mesajı gizle
+        }
+
         // --- Oyun Mantığı Güncelleme ---
         function update() {
             if (!isGameActive) {
                 return;
             }
 
-            // Panda'nın yatay ve dikey hareketini uygula
             panda.x += panda.velocityX;
             panda.velocityY += panda.gravity;
             panda.y += panda.velocityY;
 
-            // Ekran kenarlarını kontrol et
             if (panda.x < 0) panda.x = 0;
             if (panda.x + panda.width > GAME_WIDTH) panda.x = GAME_WIDTH - panda.width;
 
-            // Platformlarla çarpışma kontrolü
             platforms.forEach(platform => {
                 if (panda.velocityY > 0 &&
                     panda.y + panda.height >= platform.y &&
@@ -269,24 +345,30 @@
                     panda.x + panda.width > platform.x &&
                     panda.x < platform.x + platform.width) {
                     
+                    if (panda.isJumping) { // Platforma her atladığında puan ekle
+                        score += 1;
+                        // 20'nin katına ulaşıldığında kutlama mesajını göster
+                        if (score > 0 && score % 20 === 0 && score !== lastCelebrationScore) {
+                            showCelebrationMessage();
+                            lastCelebrationScore = score;
+                        }
+                    }
+                    
                     panda.velocityY = 0;
                     panda.y = platform.y - panda.height;
                     panda.isJumping = false;
                 }
             });
 
-            // Ekranı kaydırma mantığı
             if (panda.y < GAME_HEIGHT / 4) {
                 const scrollSpeed = GAME_HEIGHT / 4 - panda.y;
                 panda.y += scrollSpeed;
-                score += Math.floor(scrollSpeed / 10);
-
+                
                 platforms.forEach(platform => {
                     platform.y += scrollSpeed;
                 });
             }
             
-            // Ekrandan çıkan platformları sil ve yenilerini oluştur
             if (platforms.length > 0 && platforms[0].y > GAME_HEIGHT) {
                 platforms.shift();
                 const lastPlatform = platforms[platforms.length - 1];
@@ -295,11 +377,10 @@
                 platforms.push({ x: newX, y: newY, width: 80, height: 20 });
             }
 
-            // Oyun bitti mi kontrolü
             if (panda.y > GAME_HEIGHT) {
                 isGameActive = false;
                 alert(`Oyun Bitti! Puanınız: ${score}`);
-                document.location.reload(); // Sayfayı yenileyerek oyunu tekrar başlat
+                document.location.reload();
             }
         }
         
@@ -315,7 +396,7 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // --- Kontrol Butonları İçin Olay Dinleyicileri ---
+        // --- Kontrol Olay Dinleyicileri ---
         const handleLeft = () => { if (isGameActive) panda.velocityX = -5; };
         const handleRight = () => { if (isGameActive) panda.velocityX = 5; };
         const handleStop = () => { if (isGameActive) panda.velocityX = 0; };
@@ -326,10 +407,10 @@
             }
         };
 
-        // Masaüstü ve mobil uyumluluk için mousedown/touchstart ve mouseup/touchend
+        // Mobil tuş kontrolleri
         leftButton.addEventListener('mousedown', handleLeft);
         leftButton.addEventListener('mouseup', handleStop);
-        leftButton.addEventListener('mouseleave', handleStop); // Fare butonun dışına çıkarsa dur
+        leftButton.addEventListener('mouseleave', handleStop);
         leftButton.addEventListener('touchstart', handleLeft, { passive: false });
         leftButton.addEventListener('touchend', handleStop);
 
@@ -342,7 +423,7 @@
         jumpButton.addEventListener('click', handleJump);
         jumpButton.addEventListener('touchend', handleJump);
         
-        // --- Klavye Kontrolleri ---
+        // Klavye kontrolleri
         document.addEventListener('keydown', (e) => {
             if (!isGameActive) return;
             switch (e.code) {
@@ -369,9 +450,19 @@
             }
         });
 
-        // --- Oyunu Başlatma Mantığı ---
+        // --- Karakter Seçim ve Oyun Başlatma Mantığı ---
+        let selectedCharacter = null;
+        characterCards.forEach(card => {
+            card.addEventListener('click', () => {
+                characterCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedCharacter = card.dataset.character;
+                startButton.style.display = 'block';
+            });
+        });
+
         function startCountdown() {
-            startScreen.style.display = 'none';
+            characterSelectScreen.style.display = 'none';
             countdownScreen.style.display = 'flex';
             let count = 3;
             countdownDisplay.innerText = count;
@@ -390,8 +481,11 @@
         }
 
         startButton.addEventListener('click', () => {
-            createPlatforms();
-            startCountdown();
+            if (selectedCharacter) {
+                panda.svg = CHARACTERS[selectedCharacter];
+                createPlatforms();
+                startCountdown();
+            }
         });
     </script>
 </body>
