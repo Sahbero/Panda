@@ -45,7 +45,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
+            display: none; /* Varsayılan olarak gizli */
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -119,7 +119,7 @@
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             z-index: 25;
-            display: flex;
+            display: none; /* Varsayılan olarak gizli */
             gap: 15px;
             align-items: center;
         }
@@ -136,13 +136,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            background-color: rgba(255, 255, 255, 0.95);
             padding: 20px 40px;
             border-radius: 15px;
             font-size: 2.5rem;
             color: #FF69B4;
             font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Okunurluk için gölge eklendi */
             z-index: 30;
             display: none;
             opacity: 0;
@@ -243,12 +242,22 @@
                     <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#7a7a7a;}.face{fill:#c2c2c2;}.eyes{fill:#333;}.nose{fill:#333;}</style><circle class="ears" cx="20" cy="20" r="20"/><circle class="ears" cx="80" cy="20" r="20"/><path class="face" d="M50 40 C20 40, 20 80, 50 80 C80 80, 80 40, 50 40 Z"/><circle class="eyes" cx="38" cy="50" r="6"/><circle class="eyes" cx="62" cy="50" r="6"/><path class="nose" d="M50 65 C45 68, 55 68, 50 65"/></svg>
                     <h3>Koala</h3>
                 </div>
+                <!-- Yeni karakter: Kelek -->
+                <div class="character-card" data-character="kelek">
+                    <img src="https://placehold.co/80x80/FF6347/FFF?text=Kelek" alt="Kelek" width="80" height="80">
+                    <h3>Kelek</h3>
+                </div>
+                <!-- Yeni karakter: Zırzop -->
+                <div class="character-card" data-character="zirzop">
+                    <img src="https://placehold.co/80x80/9370DB/FFF?text=Zırzop" alt="Zırzop" width="80" height="80">
+                    <h3>Zırzop</h3>
+                </div>
             </div>
             <button id="startButton" style="display: none;">Oyuna Başla</button>
         </div>
 
         <!-- Geri Sayım Ekranı -->
-        <div id="countdownScreen" style="display: none;">
+        <div id="countdownScreen">
             <p id="countdownDisplay"></p>
         </div>
 
@@ -256,7 +265,7 @@
         <div id="celebrationMessage"></div>
 
         <!-- Oyun Bitti Ekranı -->
-        <div id="gameOverScreen" style="display: none;">
+        <div id="gameOverScreen">
             <p>Oyun Bitti!</p>
             <p id="final-score"></p>
             <button id="restartButton">Tekrar Dene</button>
@@ -280,6 +289,7 @@
         const GAME_HEIGHT = gameCanvas.height;
         const scoreDisplay = document.getElementById('score-display');
         const livesContainer = document.getElementById('lives-container');
+        const gameInfo = document.getElementById('game-info');
         const characterSelectScreen = document.getElementById('characterSelectScreen');
         const characterCards = document.querySelectorAll('.character-card');
         const startButton = document.getElementById('startButton');
@@ -313,8 +323,13 @@
             panda: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#2b2b2b;}.face{fill:#ffffff;}.eyes{fill:#2b2b2b;}.nose{fill:#2b2b2b;}</style><circle class="ears" cx="25" cy="25" r="20"/><circle class="ears" cx="75" cy="25" r="20"/><circle class="face" cx="50" cy="50" r="40"/><circle class="eyes" cx="35" cy="45" r="8"/><circle class="eyes" cx="65" cy="45" r="8"/><path class="nose" d="M50 58 C45 62, 55 62, 50 58 M45 60 Q50 65, 55 60 T50 60"/></svg>`,
             rabbit: 'https://placehold.co/80x80/FFC0CB/000?text=Rabbit',
             dragon: DRAGON_SVG,
-            koala: `<svg viewBox="0 0 00 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#7a7a7a;}.face{fill:#c2c2c2;}.eyes{fill:#333;}.nose{fill:#333;}</style><circle class="ears" cx="20" cy="20" r="20"/><circle class="ears" cx="80" cy="20" r="20"/><path class="face" d="M50 40 C20 40, 20 80, 50 80 C80 80, 80 40, 50 40 Z"/><circle class="eyes" cx="38" cy="50" r="6"/><circle class="eyes" cx="62" cy="50" r="6"/><path class="nose" d="M50 65 C45 68, 55 68, 50 65"/></svg>`
+            koala: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#7a7a7a;}.face{fill:#c2c2c2;}.eyes{fill:#333;}.nose{fill:#333;}</style><circle class="ears" cx="20" cy="20" r="20"/><circle class="ears" cx="80" cy="20" r="20"/><path class="face" d="M50 40 C20 40, 20 80, 50 80 C80 80, 80 40, 50 40 Z"/><circle class="eyes" cx="38" cy="50" r="6"/><circle class="eyes" cx="62" cy="50" r="6"/><path class="nose" d="M50 65 C45 68, 55 68, 50 65"/></svg>`,
+            kelek: 'https://placehold.co/80x80/FF6347/FFF?text=Kelek',
+            zirzop: 'https://placehold.co/80x80/9370DB/FFF?text=Zırzop'
         };
+
+        // --- Oyun Durum Yönetimi ---
+        let gameState = 'SELECT_CHARACTER';
 
         // --- Oyun Değişkenleri ---
         let character = {
@@ -341,16 +356,15 @@
         let score = 0;
         let lives = 3;
         let lastCelebrationScore = 0;
-        let isGameActive = false;
         let lastDragonSpawnScore = 0;
         let lastBalloonsSpawnScore = 0;
-
         let lastMushroomSpawnScore = 0;
-        let nextMushroomSpawnScore = Math.floor(Math.random() * 11) + 30; // 30-40 arası ilk mantar için
+        let nextMushroomSpawnScore = 0; // İlk değer oyun başlangıcında atanacak
         let isSpeedBoostActive = false;
         let flashEffectActive = false;
         let flashColorIndex = 0;
         const flashColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'];
+        let touchMoveDirection = 0; // 0: yok, 1: sağ, -1: sol
 
         // --- Bulut Oluşturma Fonksiyonu ---
         function createClouds() {
@@ -401,7 +415,7 @@
                 fireDirection: spawnSide === 'left' ? 1 : -1,
                 velocityY: -0.8,
                 fireSpawnTimer: Date.now(),
-                fireballSpawnDelay: Math.random() * 1000 + 500 // Ateş topu püskürtme sıklığı
+                fireballSpawnDelay: Math.random() * 2000 + 1500 // Ateş topu püskürtme sıklığı azaltıldı
             };
             dragon.image.src = 'data:image/svg+xml;base64,' + btoa(DRAGON_SVG);
             dragons.push(dragon);
@@ -508,7 +522,6 @@
         
         function drawDragon(dragon) {
             if (dragon.image.complete) {
-                // Ejderhayı ters çevirerek çizme
                 if (dragon.fireDirection === -1) {
                     ctx.save();
                     ctx.scale(-1, 1);
@@ -620,7 +633,8 @@
         }
         
         function showGameOverScreen() {
-            isGameActive = false;
+            gameState = 'GAME_OVER';
+            gameInfo.style.display = 'none';
             gameOverScreen.style.display = 'flex';
             finalScoreDisplay.innerText = `Son Puanınız: ${score}`;
         }
@@ -641,15 +655,17 @@
         
         // --- Oyun Mantığı Güncelleme ---
         function update() {
-            if (!isGameActive) {
-                return;
-            }
-            
             // Hız güçlendirmesi aktifse hızı ikiye katla
             const moveSpeed = isSpeedBoostActive ? character.baseSpeed * 2 : character.baseSpeed;
             
             // --- Karakter ve Platform Güncelleme ---
-            character.x += character.velocityX * (character.velocityX > 0 ? moveSpeed : -moveSpeed);
+            character.x += character.velocityX * moveSpeed;
+            
+            // Mobil kontroller için
+            if (touchMoveDirection !== 0) {
+                character.x += touchMoveDirection * moveSpeed;
+            }
+
             character.velocityY += character.gravity;
             character.y += character.velocityY;
 
@@ -737,11 +753,10 @@
                 
                 dragon.y += dragon.velocityY;
 
-                // Ejderhadan ateş topu fırlatma
                 if (Date.now() - dragon.fireSpawnTimer > dragon.fireballSpawnDelay) {
                      spawnFireball(dragon);
                      dragon.fireSpawnTimer = Date.now();
-                     dragon.fireballSpawnDelay = Math.random() * 1000 + 500; // Yeni rastgele bekleme süresi
+                     dragon.fireballSpawnDelay = Math.random() * 2000 + 1500;
                 }
             }
 
@@ -756,7 +771,6 @@
                     continue;
                 }
                 
-                // Karakter ve ateş topu çarpışma kontrolü
                 const dist = Math.hypot((character.x + character.width/2) - fireball.x, (character.y + character.height/2) - fireball.y);
                 if (dist < character.width/2 + fireball.radius) {
                     loseLife();
@@ -764,9 +778,10 @@
                 }
             }
 
-            // --- Balon Güncelleme ---
+            // --- Balon Güncelleme (Hata Düzeltildi) ---
             if (score > 0 && score % 50 === 0 && score !== lastBalloonsSpawnScore) {
                 spawnBalloons();
+                lastBalloonsSpawnScore = score; // Bu satır eklenerek hatanın tekrarlanması engellendi.
             }
             
             for (let i = balloons.length - 1; i >= 0; i--) {
@@ -788,7 +803,6 @@
                 const mushroom = mushrooms[i];
                 mushroom.y += mushroom.velocityY;
                 
-                // Karakter ve mantar çarpışma kontrolü
                 if (character.x < mushroom.x + mushroom.width &&
                     character.x + character.width > mushroom.x &&
                     character.y < mushroom.y + mushroom.height &&
@@ -819,7 +833,7 @@
         
         // --- Oyun Döngüsü ---
         function gameLoop() {
-            if (!isGameActive) {
+            if (gameState !== 'PLAYING') {
                 return;
             }
             
@@ -828,7 +842,7 @@
             update();
             
             drawBalloons();
-            drawMushroom(); // Mantarları çiz
+            drawMushroom();
             drawPlatforms();
             dragons.forEach(dragon => drawDragon(dragon));
             drawFireballs();
@@ -852,24 +866,27 @@
             const charData = CHARACTERS[charKey];
             character.image = new Image();
 
-            if (charKey === 'rabbit') {
+            if (charKey === 'rabbit' || charKey === 'kelek' || charKey === 'zirzop') {
                  character.image.src = charData;
             } else {
                 character.image.src = 'data:image/svg+xml;base64,' + btoa(charData);
             }
             
             character.image.onload = () => {
-                drawCharacter();
+                // Görsel yüklendiğinde geri sayımı başlat
+                startCountdown();
             };
             character.image.onerror = () => {
                 console.error(`Görsel yüklenemedi: ${charData}`);
+                // Hata durumunda bile devam et
+                startCountdown();
             };
         }
 
         function initGame() {
             score = 0;
             lives = 3;
-            isGameActive = false;
+            gameState = 'SELECT_CHARACTER';
             character.velocityX = 0;
             character.velocityY = 0;
             lastDragonSpawnScore = 0;
@@ -888,41 +905,49 @@
             
             createPlatforms();
             createClouds();
-            drawLives();
-            drawScore();
-            drawBackground();
-            drawPlatforms();
-            drawCharacter();
+
+            // Tüm ekranları gizle, sadece karakter seçimi göster
+            hideAllScreens();
+            characterSelectScreen.style.display = 'flex';
+        }
+
+        function hideAllScreens() {
+            characterSelectScreen.style.display = 'none';
+            countdownScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            gameInfo.style.display = 'none';
         }
 
         // --- Kontrol Olay Dinleyicileri ---
-        const handleLeft = () => { if (isGameActive) character.velocityX = -1; };
-        const handleRight = () => { if (isGameActive) character.velocityX = 1; };
-        const handleStop = () => { if (isGameActive) character.velocityX = 0; };
+        const handleLeft = () => { if (gameState === 'PLAYING') character.velocityX = -1; };
+        const handleRight = () => { if (gameState === 'PLAYING') character.velocityX = 1; };
+        const handleStop = () => { if (gameState === 'PLAYING') character.velocityX = 0; };
         const handleJump = () => {
-            if (isGameActive && !character.isJumping) {
+            if (gameState === 'PLAYING' && !character.isJumping) {
                 character.velocityY = character.jumpStrength;
                 character.isJumping = true;
             }
         };
 
-        leftButton.addEventListener('mousedown', handleLeft);
-        leftButton.addEventListener('mouseup', handleStop);
-        leftButton.addEventListener('mouseleave', handleStop);
-        leftButton.addEventListener('touchstart', handleLeft, { passive: false });
-        leftButton.addEventListener('touchend', handleStop);
+        // Mobil tuşlar
+        leftButton.addEventListener('mousedown', () => { touchMoveDirection = -1; });
+        leftButton.addEventListener('mouseup', () => { touchMoveDirection = 0; });
+        leftButton.addEventListener('mouseleave', () => { touchMoveDirection = 0; });
+        leftButton.addEventListener('touchstart', (e) => { e.preventDefault(); touchMoveDirection = -1; }, { passive: false });
+        leftButton.addEventListener('touchend', () => { touchMoveDirection = 0; });
 
-        rightButton.addEventListener('mousedown', handleRight);
-        rightButton.addEventListener('mouseup', handleStop);
-        rightButton.addEventListener('mouseleave', handleStop);
-        rightButton.addEventListener('touchstart', handleRight, { passive: false });
-        rightButton.addEventListener('touchend', handleStop);
-
-        jumpButton.addEventListener('click', handleJump);
-        jumpButton.addEventListener('touchend', handleJump);
+        rightButton.addEventListener('mousedown', () => { touchMoveDirection = 1; });
+        rightButton.addEventListener('mouseup', () => { touchMoveDirection = 0; });
+        rightButton.addEventListener('mouseleave', () => { touchMoveDirection = 0; });
+        rightButton.addEventListener('touchstart', (e) => { e.preventDefault(); touchMoveDirection = 1; }, { passive: false });
+        rightButton.addEventListener('touchend', () => { touchMoveDirection = 0; });
         
+        jumpButton.addEventListener('click', handleJump);
+        jumpButton.addEventListener('touchstart', (e) => { e.preventDefault(); handleJump(); }, { passive: false });
+        
+        // Klavye tuşları
         document.addEventListener('keydown', (e) => {
-            if (!isGameActive) return;
+            if (gameState !== 'PLAYING') return;
             switch (e.code) {
                 case 'ArrowLeft':
                     character.velocityX = -1;
@@ -938,7 +963,7 @@
         });
 
         document.addEventListener('keyup', (e) => {
-            if (!isGameActive) return;
+            if (gameState !== 'PLAYING') return;
             switch (e.code) {
                 case 'ArrowLeft':
                 case 'ArrowRight':
@@ -955,13 +980,11 @@
                 card.classList.add('selected');
                 selectedCharacter = card.dataset.character;
                 startButton.style.display = 'block';
-
-                setCharacterImage(selectedCharacter);
             });
         });
         
         function startCountdown() {
-            characterSelectScreen.style.display = 'none';
+            hideAllScreens();
             countdownScreen.style.display = 'flex';
             let count = 3;
             countdownDisplay.innerText = count;
@@ -972,8 +995,11 @@
                     countdownDisplay.innerText = count;
                 } else {
                     clearInterval(countdownInterval);
-                    countdownScreen.style.display = 'none';
-                    isGameActive = true;
+                    gameState = 'PLAYING';
+                    hideAllScreens();
+                    gameInfo.style.display = 'flex';
+                    drawLives();
+                    drawScore();
                     gameLoop();
                 }
             }, 1000);
@@ -981,20 +1007,17 @@
 
         startButton.addEventListener('click', () => {
             if (selectedCharacter) {
+                // Oyunu sıfırla, sonra karakteri yükle ve geri sayımı başlat
                 initGame();
-                startCountdown();
+                setCharacterImage(selectedCharacter);
             }
         });
         
         restartButton.addEventListener('click', () => {
-                gameOverScreen.style.display = 'none';
-                characterSelectScreen.style.display = 'flex';
-                startButton.style.display = 'none';
-                characterCards.forEach(c => c.classList.remove('selected'));
-                initGame();
+            initGame();
         });
         
-        // Oyun başlatılmadan önce ilk çizimi yap
+        // Oyun başlatılmadan önce ilk ekranı göster
         initGame();
     </script>
 </body>
