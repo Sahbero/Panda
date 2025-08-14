@@ -28,6 +28,16 @@
         }
         canvas {
             display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #fireworksCanvas {
+            z-index: 15;
+            pointer-events: none; /* Fireworks canvas'ının oyun kontrollerini engellemesini önler */
+        }
+        #gameCanvas {
+            z-index: 10;
         }
         #characterSelectScreen, #countdownScreen, #gameOverScreen {
             position: absolute;
@@ -40,7 +50,7 @@
             justify-content: center;
             align-items: center;
             background-color: rgba(255, 255, 255, 0.95);
-            z-index: 10;
+            z-index: 20;
             text-align: center;
         }
         #characterSelectScreen h1 {
@@ -108,7 +118,7 @@
             font-size: 24px;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            z-index: 5;
+            z-index: 25;
             display: flex;
             gap: 15px;
             align-items: center;
@@ -133,7 +143,7 @@
             color: #FF69B4;
             font-weight: bold;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-            z-index: 20;
+            z-index: 30;
             display: none;
             opacity: 0;
             animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.27) forwards,
@@ -203,6 +213,7 @@
 <body>
     <div id="gameContainer">
         <canvas id="gameCanvas" width="480" height="640"></canvas>
+        <canvas id="fireworksCanvas" width="480" height="640"></canvas>
         <div id="game-info">
             <span id="score-display">Puan: 0</span>
             <div id="lives-container"></div>
@@ -224,7 +235,7 @@
                 </div>
                 <div class="character-card" data-character="dragon">
                     <!-- Ejderha SVG'si -->
-                    <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.head{fill:#48c774;}.eyes{fill:yellow;}.horns{fill:#805a41;}</style><path class="head" d="M20 60 Q50 30, 80 60 L60 80 Q50 90, 40 80 Z"/><path class="horns" d="M30 40 L25 15 L35 25 Z"/><path class="horns" d="M70 40 L75 15 L65 25 Z"/><circle class="eyes" cx="40" cy="55" r="5"/><circle class="eyes" cx="60" cy="55" r="5"/><path class="mouth" d="M40 70 C45 75, 55 75, 60 70" fill="none" stroke="red" stroke-width="2"/></svg>
+                    <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.head{fill:#48c774;}.eyes{fill:yellow;}.horns{fill:#805a41;}.mouth{fill:#805a41;}</style><path class="head" d="M20 60 Q50 30, 80 60 L60 80 Q50 90, 40 80 Z"/><path class="horns" d="M30 40 L25 15 L35 25 Z"/><path class="horns" d="M70 40 L75 15 L65 25 Z"/><circle class="eyes" cx="40" cy="55" r="5"/><circle class="eyes" cx="60" cy="55" r="5"/><path class="mouth" d="M40 70 C45 75, 55 75, 60 70" fill="none" stroke="red" stroke-width="2"/></svg>
                     <h3>Ejderha</h3>
                 </div>
                 <div class="character-card" data-character="koala">
@@ -242,7 +253,7 @@
         </div>
 
         <!-- Kutlama Mesajı -->
-        <div id="celebrationMessage">Tebrikler!</div>
+        <div id="celebrationMessage"></div>
 
         <!-- Oyun Bitti Ekranı -->
         <div id="gameOverScreen" style="display: none;">
@@ -261,10 +272,12 @@
 
     <script>
         // --- Oyun Sabitleri ve DOM Elemanları ---
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const GAME_WIDTH = canvas.width;
-        const GAME_HEIGHT = canvas.height;
+        const gameCanvas = document.getElementById('gameCanvas');
+        const fireworksCanvas = document.getElementById('fireworksCanvas');
+        const ctx = gameCanvas.getContext('2d');
+        const fxCtx = fireworksCanvas.getContext('2d');
+        const GAME_WIDTH = gameCanvas.width;
+        const GAME_HEIGHT = gameCanvas.height;
         const scoreDisplay = document.getElementById('score-display');
         const livesContainer = document.getElementById('lives-container');
         const characterSelectScreen = document.getElementById('characterSelectScreen');
@@ -279,6 +292,15 @@
         const leftButton = document.getElementById('leftButton');
         const jumpButton = document.getElementById('jumpButton');
         const rightButton = document.getElementById('rightButton');
+        
+        // Yaratıcı tebrik mesajları
+        const CELEBRATION_MESSAGES = [
+            "İnanılmazsın! Devam et!",
+            "Harikasın! Yenilmezsin!",
+            "Efsane bir skor!",
+            "Tebrikler! Adeta uçuyorsun!",
+            "Mükemmel bir başarı!",
+        ];
 
         // --- Görsel Veriler (SVG ve Resim URL'leri) ---
         const SAUSAGE_SVG = `<svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="100" height="20" rx="10" ry="10" fill="#ff694f"/><path d="M5 10 C20 5, 80 5, 95 10 Q80 15, 20 15 Z" fill="#e55347"/></svg>`;
@@ -288,7 +310,7 @@
 
         const CHARACTERS = {
             panda: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#2b2b2b;}.face{fill:#ffffff;}.eyes{fill:#2b2b2b;}.nose{fill:#2b2b2b;}</style><circle class="ears" cx="25" cy="25" r="20"/><circle class="ears" cx="75" cy="25" r="20"/><circle class="face" cx="50" cy="50" r="40"/><circle class="eyes" cx="35" cy="45" r="8"/><circle class="eyes" cx="65" cy="45" r="8"/><path class="nose" d="M50 58 C45 62, 55 62, 50 58 M45 60 Q50 65, 55 60 T50 60"/></svg>`,
-            rabbit: 'tavsan.png', // Kullanıcının istediği güncel URL
+            rabbit: 'tavsan.png',
             dragon: DRAGON_SVG,
             koala: `<svg viewBox="0 0 00 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#7a7a7a;}.face{fill:#c2c2c2;}.eyes{fill:#333;}.nose{fill:#333;}</style><circle class="ears" cx="20" cy="20" r="20"/><circle class="ears" cx="80" cy="20" r="20"/><path class="face" d="M50 40 C20 40, 20 80, 50 80 C80 80, 80 40, 50 40 Z"/><circle class="eyes" cx="38" cy="50" r="6"/><circle class="eyes" cx="62" cy="50" r="6"/><path class="nose" d="M50 65 C45 68, 55 68, 50 65"/></svg>`
         };
@@ -304,14 +326,15 @@
             gravity: 0.5,
             jumpStrength: -12,
             isJumping: false,
-            image: null // Karakter görseli için Image objesi
+            image: null
         };
 
         let platforms = [];
         let clouds = [];
-        let dragons = []; // Ejderha nesnelerini saklamak için dizi
-        let fireballs = []; // Ateş topu nesnelerini saklamak için dizi
-        let balloons = []; // Balon nesnelerini saklamak için dizi
+        let dragons = [];
+        let fireballs = [];
+        let balloons = [];
+        let fireworks = []; // Havai fişek parçacıkları
         let score = 0;
         let lives = 3;
         let lastCelebrationScore = 0;
@@ -366,7 +389,7 @@
                 image: new Image(),
                 spawnTime: Date.now(),
                 fireDirection: spawnSide === 'left' ? 1 : -1,
-                velocityY: -1.5,
+                velocityY: -0.8, // Ejderhanın yükselme hızı düşürüldü
                 fireSpawnTimer: 0
             };
             dragon.image.src = 'data:image/svg+xml;base64,' + btoa(DRAGON_SVG);
@@ -404,7 +427,29 @@
             }
             lastBalloonsSpawnScore = score;
         }
+        
+        // Havai fişek oluşturma fonksiyonu
+        function createFireworks() {
+            const centerX = GAME_WIDTH / 2;
+            const centerY = GAME_HEIGHT / 2;
+            const particleCount = 50;
+            const colors = ['#ff0040', '#ff8000', '#ffff00', '#00ff80', '#0040ff', '#8000ff'];
 
+            for (let i = 0; i < particleCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 2;
+                fireworks.push({
+                    x: centerX,
+                    y: centerY,
+                    size: Math.random() * 2 + 1,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    velocityX: Math.cos(angle) * speed,
+                    velocityY: Math.sin(angle) * speed,
+                    alpha: 1
+                });
+            }
+        }
+        
         // --- Çizim Fonksiyonları ---
         function drawCharacter() {
             if (character.image && character.image.complete) {
@@ -473,6 +518,18 @@
             });
         }
 
+        function drawFireworks() {
+            fxCtx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+            fireworks.forEach(particle => {
+                fxCtx.fillStyle = particle.color;
+                fxCtx.globalAlpha = particle.alpha;
+                fxCtx.beginPath();
+                fxCtx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                fxCtx.fill();
+            });
+            fxCtx.globalAlpha = 1;
+        }
+
         function drawBackground() {
             const gradient = ctx.createLinearGradient(0, GAME_HEIGHT, 0, 0);
             gradient.addColorStop(0, '#87CEEB');
@@ -496,9 +553,13 @@
         }
 
         function showCelebrationMessage() {
+            const randomMessage = CELEBRATION_MESSAGES[Math.floor(Math.random() * CELEBRATION_MESSAGES.length)];
+            celebrationMessage.innerText = randomMessage;
             celebrationMessage.style.display = 'block';
             celebrationMessage.style.opacity = '1';
             celebrationMessage.style.animation = 'bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.27) forwards, fadeOut 0.5s 1.5s forwards';
+            
+            createFireworks(); // Havai fişek efektini başlat
             
             setTimeout(() => {
                 celebrationMessage.style.display = 'none';
@@ -655,6 +716,19 @@
                     balloons.splice(i, 1);
                 }
             }
+
+            // Havai fişek güncellemesi
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                const p = fireworks[i];
+                p.x += p.velocityX;
+                p.y += p.velocityY;
+                p.alpha -= 0.01;
+                p.velocityY += 0.05; // Yer çekimi
+                
+                if (p.alpha <= 0) {
+                    fireworks.splice(i, 1);
+                }
+            }
         }
         
         // --- Oyun Döngüsü ---
@@ -673,6 +747,7 @@
             drawCharacter();
             drawScore();
             drawLives();
+            drawFireworks(); // Havai fişekleri çiz
             
             requestAnimationFrame(gameLoop);
         }
@@ -708,6 +783,7 @@
             dragons = [];
             fireballs = [];
             balloons = [];
+            fireworks = []; // Oyun sıfırlanınca havai fişekleri de sıfırla
             
             createPlatforms();
             createClouds();
