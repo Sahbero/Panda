@@ -12,43 +12,126 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
-            font-family: sans-serif;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
             color: #333;
+            overflow: hidden;
+        }
+        #gameContainer {
+            position: relative;
+            width: 480px;
+            height: 640px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
         }
         canvas {
-            border: 2px solid #333;
-            background-color: #87CEEB; /* Gökyüzü mavisi */
+            display: block;
+        }
+        #startScreen, #countdownScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            z-index: 10;
+            text-align: center;
+        }
+        #startScreen h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        #startButton {
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            background-color: #FF69B4; /* Pembe */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        #startButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #countdownScreen p {
+            font-size: 5rem;
+            color: #FF69B4;
+            font-weight: bold;
+            animation: pulse 1s infinite;
         }
         #game-info {
             position: absolute;
             top: 20px;
             left: 20px;
             font-size: 24px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 5;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="480" height="640"></canvas>
-    <div id="game-info">Puan: 0</div>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="480" height="640"></canvas>
+        <div id="game-info">Puan: 0</div>
+        <div id="startScreen">
+            <h1>Sevimli Panda Atlayışı</h1>
+            <button id="startButton">Oyuna Başla</button>
+        </div>
+        <div id="countdownScreen" style="display: none;">
+            <p id="countdownDisplay"></p>
+        </div>
+    </div>
 
     <script>
-        // --- Oyun Sabitleri ---
+        // --- Oyun Sabitleri ve DOM Elemanları ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const GAME_WIDTH = canvas.width;
         const GAME_HEIGHT = canvas.height;
         const INFO_DISPLAY = document.getElementById('game-info');
+        const startScreen = document.getElementById('startScreen');
+        const startButton = document.getElementById('startButton');
+        const countdownScreen = document.getElementById('countdownScreen');
+        const countdownDisplay = document.getElementById('countdownDisplay');
 
-        // --- Renkler ---
-        const PANDA_COLOR = 'rgb(255, 105, 180)';
+        // --- Renkler ve Görsel Veriler ---
         const PLATFORM_COLOR = 'rgb(139, 69, 19)';
+        const PANDA_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <style>
+                .ears { fill: #333; }
+                .face { fill: white; }
+                .eyes { fill: #333; }
+                .nose { fill: #333; }
+            </style>
+            <circle class="ears" cx="25" cy="25" r="20"/>
+            <circle class="ears" cx="75" cy="25" r="20"/>
+            <circle class="face" cx="50" cy="50" r="40"/>
+            <circle class="eyes" cx="35" cy="40" r="8"/>
+            <circle class="eyes" cx="65" cy="40" r="8"/>
+            <path class="nose" d="M50 55 C45 60, 55 60, 50 55"/>
+        </svg>`;
 
         // --- Oyun Değişkenleri ---
         let panda = {
-            x: GAME_WIDTH / 2,
+            x: GAME_WIDTH / 2 - 15,
             y: GAME_HEIGHT - 50,
             width: 30,
             height: 30,
+            velocityX: 0,
             velocityY: 0,
             gravity: 0.5,
             jumpStrength: -12,
@@ -57,10 +140,11 @@
 
         let platforms = [];
         let score = 0;
-        let isGameOver = false;
+        let isGameActive = false;
 
         // --- Platform Oluşturma Fonksiyonu ---
         function createPlatforms() {
+            platforms = []; // Her başlatmada platformları sıfırla
             platforms.push({ x: GAME_WIDTH / 2 - 50, y: GAME_HEIGHT - 50, width: 100, height: 20 });
 
             for (let i = 0; i < 10; i++) {
@@ -73,8 +157,10 @@
 
         // --- Çizim Fonksiyonları ---
         function drawPanda() {
-            ctx.fillStyle = PANDA_COLOR;
-            ctx.fillRect(panda.x, panda.y, panda.width, panda.height);
+            const pandaImg = new Image();
+            // Panda SVG'sini base64 veri URI'sına dönüştürerek çizdiriyoruz
+            pandaImg.src = 'data:image/svg+xml;base64,' + btoa(PANDA_SVG);
+            ctx.drawImage(pandaImg, panda.x, panda.y, panda.width, panda.height);
         }
 
         function drawPlatforms() {
@@ -84,23 +170,36 @@
             });
         }
 
+        function drawBackground() {
+            const gradient = ctx.createLinearGradient(0, GAME_HEIGHT, 0, 0);
+            gradient.addColorStop(0, '#87CEEB'); // Altta açık mavi
+            gradient.addColorStop(1, '#00008B'); // Üstte lacivert
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        }
+
         function drawScore() {
             INFO_DISPLAY.innerText = `Puan: ${score}`;
         }
 
         // --- Oyun Mantığı Güncelleme ---
         function update() {
-            if (isGameOver) {
+            if (!isGameActive) {
                 return;
             }
 
-            // Pandayı hareket ettir
+            // Panda'nın yatay hareketini uygula
+            panda.x += panda.velocityX;
+            // Panda'nın dikey hareketini (yerçekimi) uygula
             panda.velocityY += panda.gravity;
             panda.y += panda.velocityY;
 
+            // Ekran kenarlarını kontrol et
+            if (panda.x < 0) panda.x = 0;
+            if (panda.x + panda.width > GAME_WIDTH) panda.x = GAME_WIDTH - panda.width;
+
             // Platformlarla çarpışma kontrolü
             platforms.forEach(platform => {
-                // Eğer panda düşüyorsa ve platformla temas ederse
                 if (panda.velocityY > 0 &&
                     panda.y + panda.height >= platform.y &&
                     panda.y + panda.height <= platform.y + platform.height &&
@@ -117,7 +216,7 @@
             if (panda.y < GAME_HEIGHT / 4) {
                 const scrollSpeed = GAME_HEIGHT / 4 - panda.y;
                 panda.y += scrollSpeed;
-                score += Math.floor(scrollSpeed);
+                score += Math.floor(scrollSpeed / 10);
 
                 platforms.forEach(platform => {
                     platform.y += scrollSpeed;
@@ -125,7 +224,7 @@
             }
             
             // Ekrandan çıkan platformları sil ve yenilerini oluştur
-            while (platforms[0].y > GAME_HEIGHT) {
+            while (platforms[0] && platforms[0].y > GAME_HEIGHT) {
                 platforms.shift();
                 const lastPlatform = platforms[platforms.length - 1];
                 const newY = lastPlatform.y - Math.floor(Math.random() * (100 - 60 + 1) + 60);
@@ -135,7 +234,7 @@
 
             // Oyun bitti mi kontrolü
             if (panda.y > GAME_HEIGHT) {
-                isGameOver = true;
+                isGameActive = false;
                 alert(`Oyun Bitti! Puanınız: ${score}`);
                 document.location.reload(); // Sayfayı yenileyerek oyunu tekrar başlat
             }
@@ -143,7 +242,7 @@
         
         // --- Oyun Döngüsü ---
         function gameLoop() {
-            ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+            drawBackground();
             
             update();
             drawPlatforms();
@@ -155,15 +254,58 @@
 
         // --- Kontroller ---
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !panda.isJumping) {
-                panda.velocityY = panda.jumpStrength;
-                panda.isJumping = true;
+            if (!isGameActive) return;
+            switch (e.code) {
+                case 'ArrowLeft':
+                    panda.velocityX = -5;
+                    break;
+                case 'ArrowRight':
+                    panda.velocityX = 5;
+                    break;
+                case 'ArrowUp':
+                case 'Space':
+                    if (!panda.isJumping) {
+                        panda.velocityY = panda.jumpStrength;
+                        panda.isJumping = true;
+                    }
+                    break;
             }
         });
 
-        // --- Oyunu Başlat ---
-        createPlatforms();
-        gameLoop();
+        document.addEventListener('keyup', (e) => {
+            if (!isGameActive) return;
+            switch (e.code) {
+                case 'ArrowLeft':
+                case 'ArrowRight':
+                    panda.velocityX = 0;
+                    break;
+            }
+        });
+
+        // --- Oyunu Başlatma Mantığı ---
+        function startCountdown() {
+            startScreen.style.display = 'none';
+            countdownScreen.style.display = 'flex';
+            let count = 3;
+            countdownDisplay.innerText = count;
+
+            const countdownInterval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownDisplay.innerText = count;
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownScreen.style.display = 'none';
+                    isGameActive = true;
+                    gameLoop();
+                }
+            }, 1000);
+        }
+
+        startButton.addEventListener('click', () => {
+            createPlatforms();
+            startCountdown();
+        });
     </script>
 </body>
 </html>
