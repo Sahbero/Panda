@@ -1,140 +1,169 @@
-import pygame
-import random
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sevimli Panda Atlayışı</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: sans-serif;
+            color: #333;
+        }
+        canvas {
+            border: 2px solid #333;
+            background-color: #87CEEB; /* Gökyüzü mavisi */
+        }
+        #game-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="480" height="640"></canvas>
+    <div id="game-info">Puan: 0</div>
 
-# --- Sabitler (Constants) ---
-SCREEN_WIDTH = 480
-SCREEN_HEIGHT = 640
-FPS = 60
+    <script>
+        // --- Oyun Sabitleri ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const GAME_WIDTH = canvas.width;
+        const GAME_HEIGHT = canvas.height;
+        const INFO_DISPLAY = document.getElementById('game-info');
 
-# --- Renkler (Colors) ---
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-PANDA_PINK = (255, 105, 180) # Panda rengi
-PLATFORM_BROWN = (139, 69, 19) # Platform rengi
-SKY_BLUE = (135, 206, 235) # Arkaplan rengi
+        // --- Renkler ---
+        const PANDA_COLOR = 'rgb(255, 105, 180)';
+        const PLATFORM_COLOR = 'rgb(139, 69, 19)';
 
-# --- Pygame Başlatma ---
-pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Sevimli Panda Atlayışı")
-clock = pygame.time.Clock()
+        // --- Oyun Değişkenleri ---
+        let panda = {
+            x: GAME_WIDTH / 2,
+            y: GAME_HEIGHT - 50,
+            width: 30,
+            height: 30,
+            velocityY: 0,
+            gravity: 0.5,
+            jumpStrength: -12,
+            isJumping: false
+        };
 
-# --- Panda Sınıfı ---
-class Panda(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        # Panda görseli yerine şimdilik pembe bir dikdörtgen kullanıyoruz
-        self.image = pygame.Surface([30, 30])
-        self.image.fill(PANDA_PINK)
-        self.rect = self.image.get_rect()
-        self.rect.centerx = SCREEN_WIDTH // 2
-        self.rect.bottom = SCREEN_HEIGHT - 20
-        
-        # Fizik değişkenleri
-        self.velocity_y = 0
-        self.gravity = 0.5
-        self.jump_strength = -12
+        let platforms = [];
+        let score = 0;
+        let isGameOver = false;
 
-    def update(self):
-        # Yerçekimini uygula
-        self.velocity_y += self.gravity
-        self.rect.y += self.velocity_y
-        
-        # Panda ekranın altından düşerse oyun biter
-        if self.rect.top > SCREEN_HEIGHT:
-            # Buraya oyunun bitiş mantığı eklenecek
-            pass
+        // --- Platform Oluşturma Fonksiyonu ---
+        function createPlatforms() {
+            platforms.push({ x: GAME_WIDTH / 2 - 50, y: GAME_HEIGHT - 50, width: 100, height: 20 });
 
-    def jump(self):
-        # Yukarı doğru zıplama
-        self.velocity_y = self.jump_strength
+            for (let i = 0; i < 10; i++) {
+                const lastPlatform = platforms[platforms.length - 1];
+                const newY = lastPlatform.y - Math.floor(Math.random() * (100 - 60 + 1) + 60);
+                const newX = Math.random() * (GAME_WIDTH - 80);
+                platforms.push({ x: newX, y: newY, width: 80, height: 20 });
+            }
+        }
 
-# --- Platform Sınıfı ---
-class Platform(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height):
-        super().__init__()
-        # Platform görseli yerine kahverengi bir dikdörtgen
-        self.image = pygame.Surface([width, height])
-        self.image.fill(PLATFORM_BROWN)
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        // --- Çizim Fonksiyonları ---
+        function drawPanda() {
+            ctx.fillStyle = PANDA_COLOR;
+            ctx.fillRect(panda.x, panda.y, panda.width, panda.height);
+        }
 
-# --- Oyun Nesnelerini Oluşturma ---
-all_sprites = pygame.sprite.Group()
-platforms = pygame.sprite.Group()
+        function drawPlatforms() {
+            ctx.fillStyle = PLATFORM_COLOR;
+            platforms.forEach(platform => {
+                ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+            });
+        }
 
-panda = Panda()
-all_sprites.add(panda)
+        function drawScore() {
+            INFO_DISPLAY.innerText = `Puan: ${score}`;
+        }
 
-# İlk platformu oluştur
-platform_start = Platform(SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT - 50, 100, 20)
-platforms.add(platform_start)
-all_sprites.add(platform_start)
+        // --- Oyun Mantığı Güncelleme ---
+        function update() {
+            if (isGameOver) {
+                return;
+            }
 
-# Ekranı dolduracak kadar platform oluştur
-for i in range(10):
-    last_platform = platforms.sprites()[-1]
-    new_platform_y = last_platform.rect.y - random.randrange(60, 100)
-    new_platform_x = random.randrange(0, SCREEN_WIDTH - 80)
-    new_platform = Platform(new_platform_x, new_platform_y, 80, 20)
-    platforms.add(new_platform)
-    all_sprites.add(new_platform)
+            // Pandayı hareket ettir
+            panda.velocityY += panda.gravity;
+            panda.y += panda.velocityY;
 
-# --- Ana Oyun Döngüsü ---
-running = True
-while running:
-    clock.tick(FPS)
-    
-    # --- Girişleri İşleme (Olaylar) ---
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                # Zıplama tuşu
-                panda.jump()
+            // Platformlarla çarpışma kontrolü
+            platforms.forEach(platform => {
+                // Eğer panda düşüyorsa ve platformla temas ederse
+                if (panda.velocityY > 0 &&
+                    panda.y + panda.height >= platform.y &&
+                    panda.y + panda.height <= platform.y + platform.height &&
+                    panda.x + panda.width > platform.x &&
+                    panda.x < platform.x + platform.width) {
+                    
+                    panda.velocityY = 0;
+                    panda.y = platform.y - panda.height;
+                    panda.isJumping = false;
+                }
+            });
 
-    # --- Güncelleme ---
-    all_sprites.update()
-    
-    # Platform çarpışmalarını kontrol et
-    # Panda düşerken platforma çarpıp çarpmadığını kontrol ediyoruz
-    if panda.velocity_y > 0:
-        hits = pygame.sprite.spritecollide(panda, platforms, False)
-        if hits:
-            # Panda platforma indiğinde düşüşü durdur
-            panda.velocity_y = 0
-            panda.rect.bottom = hits[0].rect.top
+            // Ekranı kaydırma mantığı
+            if (panda.y < GAME_HEIGHT / 4) {
+                const scrollSpeed = GAME_HEIGHT / 4 - panda.y;
+                panda.y += scrollSpeed;
+                score += Math.floor(scrollSpeed);
+
+                platforms.forEach(platform => {
+                    platform.y += scrollSpeed;
+                });
+            }
             
-    # --- Ekran Kaydırma Mantığı ---
-    # Panda ekranın üst çeyreğine ulaştığında dünya aşağı kaymaya başlar
-    if panda.rect.top < SCREEN_HEIGHT / 4:
-        scroll_speed = (SCREEN_HEIGHT / 4) - panda.rect.top
-        panda.rect.y += scroll_speed
-        
-        # Tüm platformları aşağı kaydır
-        for platform in platforms:
-            platform.rect.y += scroll_speed
-            
-            # Ekranın dışına çıkan platformları kaldır
-            if platform.rect.top > SCREEN_HEIGHT:
-                platform.kill()
-                
-        # Yeni platformlar oluştur
-        while len(platforms) < 10:
-            last_platform = platforms.sprites()[-1]
-            new_platform_y = last_platform.rect.y - random.randrange(60, 100)
-            new_platform_x = random.randrange(0, SCREEN_WIDTH - 80)
-            new_platform = Platform(new_platform_x, new_platform_y, 80, 20)
-            platforms.add(new_platform)
-            all_sprites.add(new_platform)
-            
-    # --- Çizim (Render) ---
-    screen.fill(SKY_BLUE)
-    all_sprites.draw(screen)
-    
-    # --- Ekranı Güncelle ---
-    pygame.display.flip()
+            // Ekrandan çıkan platformları sil ve yenilerini oluştur
+            while (platforms[0].y > GAME_HEIGHT) {
+                platforms.shift();
+                const lastPlatform = platforms[platforms.length - 1];
+                const newY = lastPlatform.y - Math.floor(Math.random() * (100 - 60 + 1) + 60);
+                const newX = Math.random() * (GAME_WIDTH - 80);
+                platforms.push({ x: newX, y: newY, width: 80, height: 20 });
+            }
 
-pygame.quit()
+            // Oyun bitti mi kontrolü
+            if (panda.y > GAME_HEIGHT) {
+                isGameOver = true;
+                alert(`Oyun Bitti! Puanınız: ${score}`);
+                document.location.reload(); // Sayfayı yenileyerek oyunu tekrar başlat
+            }
+        }
+        
+        // --- Oyun Döngüsü ---
+        function gameLoop() {
+            ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+            
+            update();
+            drawPlatforms();
+            drawPanda();
+            drawScore();
+            
+            requestAnimationFrame(gameLoop);
+        }
+
+        // --- Kontroller ---
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !panda.isJumping) {
+                panda.velocityY = panda.jumpStrength;
+                panda.isJumping = true;
+            }
+        });
+
+        // --- Oyunu Başlat ---
+        createPlatforms();
+        gameLoop();
+    </script>
+</body>
+</html>
