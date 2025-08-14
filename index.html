@@ -442,7 +442,8 @@
                 fireDirection: spawnSide === 'left' ? 1 : -1,
                 velocityY: -0.8,
                 fireSpawnTimer: Date.now(),
-                fireballSpawnDelay: Math.random() * 2000 + 1500 // Ateş topu püskürtme sıklığı azaltıldı
+                // Ejderhanın ateş topu püskürtme sıklığı iki katına çıkarıldı (gecikme yarıya indi)
+                fireballSpawnDelay: Math.random() * 1000 + 750 
             };
             dragon.image.src = 'data:image/svg+xml;base64,' + btoa(DRAGON_SVG);
             dragons.push(dragon);
@@ -725,11 +726,7 @@
                     character.x < platform.x + platform.width) {
                     
                     if (character.isJumping) {
-                        score += 1;
-                        if (score > 0 && score % 20 === 0 && score !== lastCelebrationScore) {
-                            showCelebrationMessage();
-                            lastCelebrationScore = score;
-                        }
+                        // Puanlama mantığı kaldırıldı, artık platform kaydırıldığında puan kazanılacak
                     }
                     
                     character.velocityY = 0;
@@ -758,6 +755,12 @@
             
             if (platforms.length > 0 && platforms[0].y > GAME_HEIGHT) {
                 platforms.shift();
+                // Puanlama mantığı buraya taşındı: her yeni platform geldiğinde puan artacak
+                score += 1;
+                if (score > 0 && score % 20 === 0 && score !== lastCelebrationScore) {
+                    showCelebrationMessage();
+                    lastCelebrationScore = score;
+                }
                 const lastPlatform = platforms[platforms.length - 1];
                 const newY = lastPlatform.y - Math.floor(Math.random() * (140 - 90 + 1) + 90);
                 const maxHorizontalJumpDistance = 200;
@@ -801,7 +804,8 @@
                 if (Date.now() - dragon.fireSpawnTimer > dragon.fireballSpawnDelay) {
                      spawnFireball(dragon);
                      dragon.fireSpawnTimer = Date.now();
-                     dragon.fireballSpawnDelay = Math.random() * 2000 + 1500;
+                     // Ejderhanın ateş topu püskürtme sıklığı iki katına çıkarıldı (gecikme yarıya indi)
+                     dragon.fireballSpawnDelay = Math.random() * 1000 + 750;
                 }
             }
 
