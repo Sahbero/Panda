@@ -45,7 +45,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: none; /* Varsayılan olarak gizli */
+            display: none;
+            /* Varsayılan olarak gizli */
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -119,7 +120,8 @@
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             z-index: 25;
-            display: none; /* Varsayılan olarak gizli */
+            display: none;
+            /* Varsayılan olarak gizli */
             gap: 15px;
             align-items: center;
         }
@@ -218,36 +220,29 @@
             <div id="lives-container"></div>
         </div>
         
-        <!-- Karakter Seçim Ekranı -->
         <div id="characterSelectScreen">
             <h1>Karakterini Seç</h1>
             <div id="characterList">
                 <div class="character-card" data-character="panda">
-                    <!-- Panda SVG'si -->
                     <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#2b2b2b;}.face{fill:#ffffff;}.eyes{fill:#2b2b2b;}.nose{fill:#2b2b2b;}</style><circle class="ears" cx="25" cy="25" r="20"/><circle class="ears" cx="75" cy="25" r="20"/><circle class="face" cx="50" cy="50" r="40"/><circle class="eyes" cx="35" cy="45" r="8"/><circle class="eyes" cx="65" cy="45" r="8"/><path class="nose" d="M50 58 C45 62, 55 62, 50 58 M45 60 Q50 65, 55 60 T50 60"/></svg>
                     <h3>Panda</h3>
                 </div>
                 <div class="character-card" data-character="rabbit">
-                    <!-- Tavşan görseli -->
                     <img src="tavsan.png" alt="Tavşan" width="80" height="80" id="rabbit-image" onerror="this.onerror=null;this.src='https://placehold.co/80x80/FFC0CB/000?text=Tavsan';">
                     <h3>Tavşan</h3>
                 </div>
                 <div class="character-card" data-character="dragon">
-                    <!-- Ejderha SVG'si -->
-                    <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.head{fill:#48c774;}.eyes{fill:yellow;}.horns{fill:#805a41;}.mouth{fill:#805a41;}</style><path class="head" d="M20 60 Q50 30, 80 60 L60 80 Q50 90, 40 80 Z"/><path class="horns" d="M30 40 L25 15 L35 25 Z"/><path class="horns" d="M70 40 L75 15 L65 25 Z"/><circle class="eyes" cx="40" cy="55" r="5"/><circle class="eyes" cx="60" cy="55" r="5"/><path class="mouth" d="M40 70 C45 75, 55 75, 60 70" fill="none" stroke="red" stroke-width="2"/></svg>
+                    <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.head{fill:#48c774;}.eyes{fill:yellow;}.horns{fill:#805a41;}.mouth{fill:#805a41;}</style><path class="head" d="M20 60 Q50 20, 80 60 L60 80 Q50 90, 40 80 Z"/><path class="horns" d="M30 40 L25 15 L35 25 Z"/><path class="horns" d="M70 40 L75 15 L65 25 Z"/><circle class="eyes" cx="40" cy="55" r="5"/><circle class="eyes" cx="60" cy="55" r="5"/><path class="mouth" d="M40 70 C45 75, 55 75, 60 70" fill="none" stroke="red" stroke-width="2"/></svg>
                     <h3>Ejderha</h3>
                 </div>
                 <div class="character-card" data-character="koala">
-                    <!-- Koala SVG'si -->
                     <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#7a7a7a;}.face{fill:#c2c2c2;}.eyes{fill:#333;}.nose{fill:#333;}</style><circle class="ears" cx="20" cy="20" r="20"/><circle class="ears" cx="80" cy="20" r="20"/><path class="face" d="M50 40 C20 40, 20 80, 50 80 C80 80, 80 40, 50 40 Z"/><circle class="eyes" cx="38" cy="50" r="6"/><circle class="eyes" cx="62" cy="50" r="6"/><path class="nose" d="M50 65 C45 68, 55 68, 50 65"/></svg>
                     <h3>Koala</h3>
                 </div>
-                <!-- Yeni karakter: Kelek -->
                 <div class="character-card" data-character="kelek">
                     <img src="kelek.png" alt="Kelek" width="80" height="80" onerror="this.onerror=null;this.src='https://placehold.co/80x80/FF6347/FFF?text=Kelek';">
                     <h3>Kelek</h3>
                 </div>
-                <!-- Yeni karakter: Zırzop -->
                 <div class="character-card" data-character="zirzop">
                     <img src="zırzop.png" alt="Zırzop" width="80" height="80" onerror="this.onerror=null;this.src='https://placehold.co/80x80/9370DB/FFF?text=Zırzop';">
                     <h3>Zırzop</h3>
@@ -256,15 +251,12 @@
             <button id="startButton" style="display: none;">Oyuna Başla</button>
         </div>
 
-        <!-- Geri Sayım Ekranı -->
         <div id="countdownScreen">
             <p id="countdownDisplay"></p>
         </div>
 
-        <!-- Kutlama Mesajı -->
         <div id="celebrationMessage"></div>
 
-        <!-- Oyun Bitti Ekranı -->
         <div id="gameOverScreen">
             <p>Oyun Bitti!</p>
             <p id="final-score"></p>
@@ -272,7 +264,6 @@
         </div>
     </div>
     
-    <!-- Mobil Kontrol Tuşları -->
     <div id="controls">
         <button id="leftButton" class="control-button left">◀</button>
         <button id="jumpButton" class="control-button up">▲</button>
@@ -302,7 +293,6 @@
         const leftButton = document.getElementById('leftButton');
         const jumpButton = document.getElementById('jumpButton');
         const rightButton = document.getElementById('rightButton');
-        
         // Yaratıcı tebrik mesajları
         const CELEBRATION_MESSAGES = [
             "İnanılmazsın! Devam et!",
@@ -311,14 +301,18 @@
             "Tebrikler! Adeta uçuyorsun!",
             "Mükemmel bir başarı!",
         ];
-
         // --- Görsel Veriler (SVG ve Resim URL'leri) ---
-        const SAUSAGE_SVG = `<svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="100" height="20" rx="10" ry="10" fill="#ff694f"/><path d="M5 10 C20 5, 80 5, 95 10 Q80 15, 20 15 Z" fill="#e55347"/></svg>`;
+        const SAUSAGE_SVG = `<svg viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
+            <style> .bun{fill:#d2b48c;} .sausage{fill:#ff694f;} .mustard{fill:#ffc107;} </style>
+            <rect class="bun" x="0" y="0" width="200" height="40" rx="15" ry="15"/>
+            <path class="bun" d="M0 20 C50 5, 150 5, 200 20 L200 35 Q150 45, 100 35 Q50 45, 0 35 Z"/>
+            <rect class="sausage" x="10" y="10" width="180" height="20" rx="10" ry="10"/>
+            <path class="mustard" d="M20 20 Q50 10, 100 20 T180 20" stroke-width="3" stroke-linecap="round" fill="none" stroke="#ffc107"/>
+        </svg>`;
         const CLOUD_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M10 50 A20 20 0 0 1 30 30 A25 25 0 0 1 70 30 A20 20 0 0 1 90 50 A15 15 0 0 1 75 60 L25 60 A15 15 0 0 1 10 50 Z" fill="white" fill-opacity="0.7"/></svg>`;
         const HEART_SVG = `<svg class="heart-svg" viewBox="0 0 24 24" fill="red" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
-        const DRAGON_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.head{fill:#48c774;}.eyes{fill:yellow;}.horns{fill:#805a41;}.mouth{fill:#805a41;}</style><path class="head" d="M20 60 Q50 30, 80 60 L60 80 Q50 90, 40 80 Z"/><path class="horns" d="M30 40 L25 15 L35 25 Z"/><path class="horns" d="M70 40 L75 15 L65 25 Z"/><circle class="eyes" cx="40" cy="55" r="5"/><circle class="eyes" cx="60" cy="55" r="5"/><path class="mouth" d="M40 70 C45 75, 55 75, 60 70" fill="none" stroke="red" stroke-width="2"/></svg>`;
+        const DRAGON_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.head{fill:#48c774;}.eyes{fill:yellow;}.horns{fill:#805a41;}.mouth{fill:#805a41;}</style><path class="head" d="M20 60 Q50 20, 80 60 L60 80 Q50 90, 40 80 Z"/><path class="horns" d="M30 40 L25 15 L35 25 Z"/><path class="horns" d="M70 40 L75 15 L65 25 Z"/><circle class="eyes" cx="40" cy="55" r="5"/><circle class="eyes" cx="60" cy="55" r="5"/><path class="mouth" d="M40 70 C45 75, 55 75, 60 70" fill="none" stroke="red" stroke-width="2"/></svg>`;
         const MUSHROOM_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.stem{fill:#fff}.cap{fill:#c00}.dots{fill:#fff}</style><rect class="stem" x="40" y="55" width="20" height="40"/><path class="cap" d="M20 55 C20 20, 80 20, 80 55 Z"/><circle class="dots" cx="35" cy="40" r="5"/><circle class="dots" cx="65" cy="40" r="5"/><circle class="dots" cx="50" cy="30" r="5"/></svg>`;
-
         const CHARACTERS = {
             panda: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#2b2b2b;}.face{fill:#ffffff;}.eyes{fill:#2b2b2b;}.nose{fill:#2b2b2b;}</style><circle class="ears" cx="25" cy="25" r="20"/><circle class="ears" cx="75" cy="25" r="20"/><circle class="face" cx="50" cy="50" r="40"/><circle class="eyes" cx="35" cy="45" r="8"/><circle class="eyes" cx="65" cy="45" r="8"/><path class="nose" d="M50 58 C45 62, 55 62, 50 58 M45 60 Q50 65, 55 60 T50 60"/></svg>`,
             rabbit: 'tavsan.png',
@@ -327,10 +321,8 @@
             kelek: 'kelek.png',
             zirzop: 'zırzop.png'
         };
-
         // --- Oyun Durum Yönetimi ---
         let gameState = 'SELECT_CHARACTER';
-
         // --- Oyun Değişkenleri ---
         let character = {
             x: 0,
@@ -345,7 +337,6 @@
             image: null,
             baseSpeed: 3
         };
-
         let platforms = [];
         let clouds = [];
         let dragons = [];
@@ -359,12 +350,14 @@
         let lastDragonSpawnScore = 0;
         let lastBalloonsSpawnScore = 0;
         let lastMushroomSpawnScore = 0;
-        let nextMushroomSpawnScore = 0; // İlk değer oyun başlangıcında atanacak
+        let nextMushroomSpawnScore = 0;
+        // İlk değer oyun başlangıcında atanacak
         let isSpeedBoostActive = false;
         let flashEffectActive = false;
         let flashColorIndex = 0;
         const flashColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'];
-        let touchMoveDirection = 0; // 0: yok, 1: sağ, -1: sol
+        let touchMoveDirection = 0;
+        // 0: yok, 1: sağ, -1: sol
 
         // --- Ses Değişkenleri ---
         let deathSound;
@@ -411,10 +404,8 @@
             platforms = [];
             const initialPlatform = { x: GAME_WIDTH / 2 - 50, y: GAME_HEIGHT - 50, width: 100, height: 20 };
             platforms.push(initialPlatform);
-
             character.x = initialPlatform.x + (initialPlatform.width / 2) - (character.width / 2);
             character.y = initialPlatform.y - character.height;
-
             for (let i = 0; i < 15; i++) {
                 const lastPlatform = platforms[platforms.length - 1];
                 const newY = lastPlatform.y - Math.floor(Math.random() * (140 - 90 + 1) + 90);
@@ -496,7 +487,7 @@
                 y: GAME_HEIGHT + 20,
                 width: mushroomWidth,
                 height: mushroomHeight,
-                velocityY: -0.8
+                velocityY: -1.2 // Hız 1.5 kat artırıldı (-0.8 * 1.5)
             };
             mushrooms.push(mushroom);
             lastMushroomSpawnScore = score;
@@ -509,7 +500,6 @@
             const centerY = GAME_HEIGHT / 2;
             const particleCount = 50;
             const colors = ['#ff0040', '#ff8000', '#ffff00', '#00ff80', '#0040ff', '#8000ff'];
-
             for (let i = 0; i < particleCount; i++) {
                 const angle = Math.random() * Math.PI * 2;
                 const speed = Math.random() * 5 + 2;
@@ -640,7 +630,6 @@
             celebrationMessage.style.display = 'block';
             celebrationMessage.style.opacity = '1';
             celebrationMessage.style.animation = 'bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.27) forwards, fadeOut 0.5s 1.5s forwards';
-            
             createFireworks();
             
             setTimeout(() => {
@@ -656,11 +645,9 @@
             setTimeout(() => {
                 isSpeedBoostActive = false;
             }, 5000);
-
             let flashInterval = setInterval(() => {
                 flashColorIndex = (flashColorIndex + 1) % flashColors.length;
             }, 100);
-
             setTimeout(() => {
                 flashEffectActive = false;
                 clearInterval(flashInterval);
@@ -672,7 +659,6 @@
             gameInfo.style.display = 'none';
             gameOverScreen.style.display = 'flex';
             finalScoreDisplay.innerText = `Son Puanınız: ${score}`;
-            
             // Oyun bittiğinde müziği durdur
             if (backgroundMusic) {
                 backgroundMusic.pause();
@@ -706,7 +692,6 @@
             
             // --- Karakter ve Platform Güncelleme ---
             character.x += character.velocityX * moveSpeed;
-            
             // Mobil kontroller için
             if (touchMoveDirection !== 0) {
                 character.x += touchMoveDirection * moveSpeed;
@@ -714,10 +699,8 @@
 
             character.velocityY += character.gravity;
             character.y += character.velocityY;
-
             if (character.x < 0) character.x = 0;
             if (character.x + character.width > GAME_WIDTH) character.x = GAME_WIDTH - character.width;
-
             platforms.forEach(platform => {
                 if (character.velocityY > 0 &&
                     character.y + character.height >= platform.y &&
@@ -734,7 +717,6 @@
                     character.isJumping = false;
                 }
             });
-
             if (character.y < GAME_HEIGHT / 4) {
                 const scrollSpeed = GAME_HEIGHT / 4 - character.y;
                 character.y += scrollSpeed;
@@ -800,7 +782,6 @@
                 }
                 
                 dragon.y += dragon.velocityY;
-
                 if (Date.now() - dragon.fireSpawnTimer > dragon.fireballSpawnDelay) {
                      spawnFireball(dragon);
                      dragon.fireSpawnTimer = Date.now();
@@ -879,7 +860,6 @@
                 p.y += p.velocityY;
                 p.alpha -= 0.01;
                 p.velocityY += 0.05;
-                
                 if (p.alpha <= 0) {
                     fireworks.splice(i, 1);
                 }
@@ -893,7 +873,6 @@
             }
             
             drawBackground();
-            
             update();
             
             drawBalloons();
@@ -905,7 +884,6 @@
             drawScore();
             drawLives();
             drawFireworks();
-            
             if (flashEffectActive) {
                 ctx.fillStyle = flashColors[flashColorIndex];
                 ctx.globalAlpha = 0.3;
@@ -951,19 +929,16 @@
             nextMushroomSpawnScore = Math.floor(Math.random() * 11) + 30;
             isSpeedBoostActive = false;
             flashEffectActive = false;
-            
             dragons = [];
             fireballs = [];
             balloons = [];
             mushrooms = [];
             fireworks = [];
-            
             // Sesleri yükle
             loadSounds();
             
             createPlatforms();
             createClouds();
-
             // Tüm ekranları gizle, sadece karakter seçimi göster
             hideAllScreens();
             characterSelectScreen.style.display = 'flex';
@@ -986,7 +961,6 @@
                 character.isJumping = true;
             }
         };
-
         // Mobil tuşlar
         leftButton.addEventListener('mousedown', () => { touchMoveDirection = -1; });
         leftButton.addEventListener('mouseup', () => { touchMoveDirection = 0; });
@@ -1002,7 +976,6 @@
         
         jumpButton.addEventListener('click', handleJump);
         jumpButton.addEventListener('touchstart', (e) => { e.preventDefault(); handleJump(); }, { passive: false });
-        
         // Klavye tuşları
         document.addEventListener('keydown', (e) => {
             if (gameState !== 'PLAYING') return;
@@ -1019,7 +992,6 @@
                     break;
             }
         });
-
         document.addEventListener('keyup', (e) => {
             if (gameState !== 'PLAYING') return;
             switch (e.code) {
@@ -1029,7 +1001,6 @@
                     break;
             }
         });
-
         // --- Karakter Seçim ve Oyun Başlatma Mantığı ---
         let selectedCharacter = null;
         characterCards.forEach(card => {
@@ -1046,7 +1017,6 @@
             countdownScreen.style.display = 'flex';
             let count = 3;
             countdownDisplay.innerText = count;
-
             const countdownInterval = setInterval(() => {
                 count--;
                 if (count > 0) {
@@ -1078,7 +1048,6 @@
         restartButton.addEventListener('click', () => {
             initGame();
         });
-        
         // Oyun başlatılmadan önce ilk ekranı göster
         initGame();
     </script>
