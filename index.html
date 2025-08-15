@@ -313,47 +313,11 @@
         ];
 
         // --- Görsel Veriler (SVG ve Resim URL'leri) ---
-        // Daha gerçekçi sosisli platform SVG'si
-        const SAUSAGE_SVG = `<svg viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
-            <!-- Sosis ekmeği -->
-            <path d="M5 25 C15 10, 85 10, 95 25 C85 30, 15 30, 5 25 Z" fill="#D2B48C"/>
-            <!-- Taşmış sosis -->
-            <path d="M10 20 Q50 5, 90 20" fill="#FF4500"/>
-            <path d="M10 20 Q50 15, 90 20" fill="#E9967A"/>
-            <!-- Hardal -->
-            <path d="M20 18 Q30 15, 40 18 Q50 15, 60 18 Q70 15, 80 18" fill="#FFD700" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>`;
+        const SAUSAGE_SVG = `<svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="100" height="20" rx="10" ry="10" fill="#ff694f"/><path d="M5 10 C20 5, 80 5, 95 10 Q80 15, 20 15 Z" fill="#e55347"/></svg>`;
         const CLOUD_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M10 50 A20 20 0 0 1 30 30 A25 25 0 0 1 70 30 A20 20 0 0 1 90 50 A15 15 0 0 1 75 60 L25 60 A15 15 0 0 1 10 50 Z" fill="white" fill-opacity="0.7"/></svg>`;
         const HEART_SVG = `<svg class="heart-svg" viewBox="0 0 24 24" fill="red" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
-        // Daha profesyonel ejderha SVG'si
-        const DRAGON_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <style>.head{fill:#48c774;}.eyes{fill:#f7e800;}.horns{fill:#805a41;}.mouth{fill:#805a41;}.scale{fill:#2b8d54;}</style>
-            <!-- Ejderha gövdesi ve kafası -->
-            <path class="head" d="M20 60 Q50 30, 80 60 L70 70 Q60 85, 50 80 Q40 85, 30 70 Z"/>
-            <!-- Boynuzlar -->
-            <path class="horns" d="M30 40 L25 15 L35 25 Z"/>
-            <path class="horns" d="M70 40 L75 15 L65 25 Z"/>
-            <!-- Gözler -->
-            <circle class="eyes" cx="40" cy="55" r="5"/>
-            <circle class="eyes" cx="60" cy="55" r="5"/>
-            <!-- Burun delikleri -->
-            <circle class="mouth" cx="45" cy="65" r="2"/>
-            <circle class="mouth" cx="55" cy="65" r="2"/>
-            <!-- Ağız -->
-            <path class="mouth" d="M40 70 C45 75, 55 75, 60 70" fill="none" stroke="#d32f2f" stroke-width="2"/>
-        </svg>`;
+        const DRAGON_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.head{fill:#48c774;}.eyes{fill:yellow;}.horns{fill:#805a41;}.mouth{fill:#805a41;}</style><path class="head" d="M20 60 Q50 30, 80 60 L60 80 Q50 90, 40 80 Z"/><path class="horns" d="M30 40 L25 15 L35 25 Z"/><path class="horns" d="M70 40 L75 15 L65 25 Z"/><circle class="eyes" cx="40" cy="55" r="5"/><circle class="eyes" cx="60" cy="55" r="5"/><path class="mouth" d="M40 70 C45 75, 55 75, 60 70" fill="none" stroke="red" stroke-width="2"/></svg>`;
         const MUSHROOM_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.stem{fill:#fff}.cap{fill:#c00}.dots{fill:#fff}</style><rect class="stem" x="40" y="55" width="20" height="40"/><path class="cap" d="M20 55 C20 20, 80 20, 80 55 Z"/><circle class="dots" cx="35" cy="40" r="5"/><circle class="dots" cx="65" cy="40" r="5"/><circle class="dots" cx="50" cy="30" r="5"/></svg>`;
-        // Ateş efekti için daha profesyonel bir SVG tanımlaması
-        const FIRE_SVG = (size) => `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
-            <style>
-                .flame1 { fill: #ff6600; }
-                .flame2 { fill: #ff9900; }
-                .flame3 { fill: #ffcc00; }
-            </style>
-            <path class="flame1" d="M50 90 Q30 70, 40 40 Q50 20, 60 40 Q70 70, 50 90 Z" />
-            <path class="flame2" d="M50 80 Q35 60, 45 35 Q50 15, 55 35 Q65 60, 50 80 Z" />
-            <path class="flame3" d="M50 70 Q40 55, 50 30 Q60 55, 50 70 Z" />
-        </svg>`;
 
         const CHARACTERS = {
             panda: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><style>.ears{fill:#2b2b2b;}.face{fill:#ffffff;}.eyes{fill:#2b2b2b;}.nose{fill:#2b2b2b;}</style><circle class="ears" cx="25" cy="25" r="20"/><circle class="ears" cx="75" cy="25" r="20"/><circle class="face" cx="50" cy="50" r="40"/><circle class="eyes" cx="35" cy="45" r="8"/><circle class="eyes" cx="65" cy="45" r="8"/><path class="nose" d="M50 58 C45 62, 55 62, 50 58 M45 60 Q50 65, 55 60 T50 60"/></svg>`,
@@ -412,13 +376,16 @@
         function loadSounds() {
             // Karakter öldüğünde çalacak ses
             deathSound = new Audio();
-            deathSound.src = 'ölüm.m4a';
+            deathSound.src = 'ölüm.m4a'; 
+
             // Mantar alındığında çalacak ses
             mushroomSound = new Audio();
             mushroomSound.src = 'mantar.m4a';
+
             // Ejderha çıktığında çalacak ses
             dragonSound = new Audio();
             dragonSound.src = 'ejderha.m4a';
+            
             // --- Arka plan müziği ---
             backgroundMusic = new Audio();
             backgroundMusic.loop = true; // Müziğin sürekli tekrar etmesi için
@@ -442,110 +409,566 @@
         // --- Platform Oluşturma Fonksiyonu ---
         function createPlatforms() {
             platforms = [];
-            const initialPlatform = {
-                x: GAME_WIDTH / 2 - 50,
-                y: GAME_HEIGHT - 50,
-                width: 100,
-                height: 20
-            };
+            const initialPlatform = { x: GAME_WIDTH / 2 - 50, y: GAME_HEIGHT - 50, width: 100, height: 20 };
             platforms.push(initialPlatform);
 
             character.x = initialPlatform.x + (initialPlatform.width / 2) - (character.width / 2);
             character.y = initialPlatform.y - character.height;
 
             for (let i = 0; i < 15; i++) {
-                platforms.push({
-                    x: Math.random() * (GAME_WIDTH - 100),
-                    y: GAME_HEIGHT - 100 - i * 100,
-                    width: 100,
-                    height: 20
-                });
+                const lastPlatform = platforms[platforms.length - 1];
+                const newY = lastPlatform.y - Math.floor(Math.random() * (140 - 90 + 1) + 90);
+                const maxHorizontalJumpDistance = 200;
+                const minX = Math.max(0, lastPlatform.x - maxHorizontalJumpDistance);
+                const maxX = Math.min(GAME_WIDTH - 80, lastPlatform.x + maxHorizontalJumpDistance);
+                const newX = Math.random() * (maxX - minX) + minX;
+
+                platforms.push({ x: newX, y: newY, width: 80, height: 20 });
+            }
+        }
+        
+        // --- Ejderha ve Balonları Oluşturma Fonksiyonları ---
+        function spawnDragon() {
+            const dragonWidth = 120;
+            const dragonHeight = 80;
+            const spawnSide = Math.random() > 0.5 ? 'left' : 'right';
+            const dragon = {
+                x: spawnSide === 'left' ? -dragonWidth + 40 : GAME_WIDTH - 40,
+                y: GAME_HEIGHT,
+                width: dragonWidth,
+                height: dragonHeight,
+                image: new Image(),
+                spawnTime: Date.now(),
+                fireDirection: spawnSide === 'left' ? 1 : -1,
+                velocityY: -0.8,
+                fireSpawnTimer: Date.now(),
+                // Ejderhanın ateş topu püskürtme sıklığı iki katına çıkarıldı (gecikme yarıya indi)
+                fireballSpawnDelay: Math.random() * 1000 + 750 
+            };
+            dragon.image.src = 'data:image/svg+xml;base64,' + btoa(DRAGON_SVG);
+            dragons.push(dragon);
+            lastDragonSpawnScore = score;
+
+            // Ejderha ortaya çıktığında ses çal
+            if (dragonSound) {
+                dragonSound.currentTime = 0;
+                dragonSound.play();
             }
         }
 
-        // --- Ejderha Oluşturma Fonksiyonu ---
-        function createDragons() {
-            dragons = [];
-            if (score > 100) {
-                const dragonY = character.y - (GAME_HEIGHT / 2);
-                dragons.push({
-                    x: Math.random() < 0.5 ? -100 : GAME_WIDTH + 100,
-                    y: dragonY,
-                    width: 80,
-                    height: 80,
-                    speed: 2,
-                    fireballTimer: 0,
-                    fireballInterval: 100 + Math.random() * 100,
-                    isFacingLeft: Math.random() < 0.5
+        function spawnFireball(dragon) {
+            const fireRadius = 10 + Math.random() * 5;
+            const fireX = dragon.x + (dragon.fireDirection === 1 ? dragon.width - 20 : 20);
+            const fireY = dragon.y + dragon.height / 2;
+            const fireball = {
+                x: fireX,
+                y: fireY,
+                radius: fireRadius,
+                velocityX: dragon.fireDirection * (Math.random() * 1 + 0.5), // Ateş topu hızı düşürüldü
+                velocityY: -(Math.random() * 1 + 0.5), // Ateş topu hızı düşürüldü
+                creationTime: Date.now()
+            };
+            fireballs.push(fireball);
+        }
+        
+        function spawnBalloons() {
+            const balloonColors = ['#FF69B4', '#FFD700', '#00BFFF', '#ADFF2F', '#FF4500'];
+            for (let i = 0; i < 10; i++) {
+                const balloon = {
+                    x: Math.random() * GAME_WIDTH,
+                    y: GAME_HEIGHT + Math.random() * 100,
+                    radius: Math.random() * 10 + 15,
+                    color: balloonColors[Math.floor(Math.random() * balloonColors.length)],
+                    velocityX: (Math.random() - 0.5) * 0.5,
+                    // Balonların hızı 2 katına çıkarıldı.
+                    velocityY: -2 * (Math.random() * 0.5 + 1), 
+                };
+                balloons.push(balloon);
+            }
+            lastBalloonsSpawnScore = score;
+        }
+
+        function spawnMushroom() {
+            const mushroomWidth = 40;
+            const mushroomHeight = 40;
+            const mushroom = {
+                x: Math.random() * (GAME_WIDTH - mushroomWidth),
+                y: GAME_HEIGHT + 20,
+                width: mushroomWidth,
+                height: mushroomHeight,
+                velocityY: -0.8
+            };
+            mushrooms.push(mushroom);
+            lastMushroomSpawnScore = score;
+            nextMushroomSpawnScore = score + Math.floor(Math.random() * 11) + 30; // Yeni mantar için puan aralığı
+        }
+        
+        // Havai fişek oluşturma fonksiyonu
+        function createFireworks() {
+            const centerX = GAME_WIDTH / 2;
+            const centerY = GAME_HEIGHT / 2;
+            const particleCount = 50;
+            const colors = ['#ff0040', '#ff8000', '#ffff00', '#00ff80', '#0040ff', '#8000ff'];
+
+            for (let i = 0; i < particleCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 2;
+                fireworks.push({
+                    x: centerX,
+                    y: centerY,
+                    size: Math.random() * 2 + 1,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    velocityX: Math.cos(angle) * speed,
+                    velocityY: Math.sin(angle) * speed,
+                    alpha: 1
                 });
             }
         }
+        
+        // --- Çizim Fonksiyonları ---
+        function drawCharacter() {
+            if (character.image && character.image.complete) {
+                ctx.drawImage(character.image, character.x, character.y, character.width, character.height);
+            } else {
+                ctx.fillStyle = '#663399';
+                ctx.fillRect(character.x, character.y, character.width, character.height);
+            }
+        }
+        
+        function drawSausagePlatform(platform) {
+            const sausageImg = new Image();
+            sausageImg.src = 'data:image/svg+xml;base64,' + btoa(SAUSAGE_SVG);
+            ctx.drawImage(sausageImg, platform.x, platform.y, platform.width, platform.height);
+        }
 
-        // --- Balon Oluşturma Fonksiyonu ---
-        function createBalloons() {
-            balloons = [];
-            if (score > 200) {
-                const balloonCount = Math.floor(Math.random() * 3) + 1;
-                for (let i = 0; i < balloonCount; i++) {
-                    balloons.push({
-                        x: Math.random() * (GAME_WIDTH - 30),
-                        y: character.y - (GAME_HEIGHT / 2) - 50 * i,
-                        width: 30,
-                        height: 40,
-                        isCollected: false
-                    });
+        function drawPlatforms() {
+            platforms.forEach(platform => {
+                drawSausagePlatform(platform);
+            });
+        }
+
+        function drawClouds() {
+            const cloudImg = new Image();
+            cloudImg.src = 'data:image/svg+xml;base64,' + btoa(CLOUD_SVG);
+            clouds.forEach(cloud => {
+                ctx.drawImage(cloudImg, cloud.x, cloud.y, cloud.width, cloud.height);
+            });
+        }
+        
+        function drawDragon(dragon) {
+            if (dragon.image.complete) {
+                if (dragon.fireDirection === -1) {
+                    ctx.save();
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(dragon.image, -dragon.x - dragon.width, dragon.y, dragon.width, dragon.height);
+                    ctx.restore();
+                } else {
+                    ctx.drawImage(dragon.image, dragon.x, dragon.y, dragon.width, dragon.height);
                 }
             }
         }
 
-        // --- Mantar Oluşturma Fonksiyonu ---
-        function createMushrooms() {
-            mushrooms = [];
-            const mushroomX = Math.random() * (GAME_WIDTH - 30);
-            const mushroomY = character.y - (GAME_HEIGHT / 2);
-            mushrooms.push({
-                x: mushroomX,
-                y: mushroomY,
-                width: 30,
-                height: 30,
-                isCollected: false
+        function drawFireballs() {
+            fireballs.forEach(fireball => {
+                ctx.fillStyle = `rgba(255, ${Math.floor(Math.random() * 150)}, 0, 0.8)`;
+                ctx.beginPath();
+                ctx.arc(fireball.x, fireball.y, fireball.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+        
+        function drawBalloons() {
+            balloons.forEach(balloon => {
+                ctx.fillStyle = balloon.color;
+                ctx.beginPath();
+                ctx.ellipse(balloon.x, balloon.y, balloon.radius, balloon.radius * 1.3, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = balloon.color;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(balloon.x, balloon.y + balloon.radius * 1.3);
+                ctx.lineTo(balloon.x, balloon.y + balloon.radius * 2.5);
+                ctx.stroke();
             });
         }
 
-        // --- Oyun Durumunu Sıfırlama Fonksiyonu ---
-        function initGame() {
-            gameState = 'SELECT_CHARACTER';
-            hideAllScreens();
-            characterSelectScreen.style.display = 'flex';
-            score = 0;
-            lives = 3;
-            lastCelebrationScore = 0;
-            lastDragonSpawnScore = 0;
-            lastBalloonsSpawnScore = 0;
-            lastMushroomSpawnScore = 0;
-            nextMushroomSpawnScore = 150 + Math.floor(Math.random() * 100);
-            isSpeedBoostActive = false;
-            flashEffectActive = false;
-            touchMoveDirection = 0;
+        function drawMushroom() {
+            const mushroomImg = new Image();
+            mushroomImg.src = 'data:image/svg+xml;base64,' + btoa(MUSHROOM_SVG);
+            mushrooms.forEach(mushroom => {
+                ctx.drawImage(mushroomImg, mushroom.x, mushroom.y, mushroom.width, mushroom.height);
+            });
+        }
+
+        function drawFireworks() {
+            fxCtx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+            fireworks.forEach(particle => {
+                fxCtx.fillStyle = particle.color;
+                fxCtx.globalAlpha = particle.alpha;
+                fxCtx.beginPath();
+                fxCtx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                fxCtx.fill();
+            });
+            fxCtx.globalAlpha = 1;
+        }
+
+        function drawBackground() {
+            const gradient = ctx.createLinearGradient(0, GAME_HEIGHT, 0, 0);
+            gradient.addColorStop(0, '#87CEEB');
+            gradient.addColorStop(1, '#1E90FF');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+            drawClouds();
+        }
+
+        function drawScore() {
+            scoreDisplay.innerText = `Puan: ${score}`;
+        }
+        
+        function drawLives() {
+            livesContainer.innerHTML = '';
+            for (let i = 0; i < lives; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = HEART_SVG;
+                livesContainer.appendChild(heart);
+            }
+        }
+
+        function showCelebrationMessage() {
+            const randomMessage = CELEBRATION_MESSAGES[Math.floor(Math.random() * CELEBRATION_MESSAGES.length)];
+            celebrationMessage.innerText = randomMessage;
+            celebrationMessage.style.display = 'block';
+            celebrationMessage.style.opacity = '1';
+            celebrationMessage.style.animation = 'bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.27) forwards, fadeOut 0.5s 1.5s forwards';
             
+            createFireworks();
+            
+            setTimeout(() => {
+                celebrationMessage.style.display = 'none';
+                celebrationMessage.style.animation = '';
+            }, 2000);
+        }
+
+        function activatePowerUp() {
+            isSpeedBoostActive = true;
+            flashEffectActive = true;
+            
+            setTimeout(() => {
+                isSpeedBoostActive = false;
+            }, 5000);
+
+            let flashInterval = setInterval(() => {
+                flashColorIndex = (flashColorIndex + 1) % flashColors.length;
+            }, 100);
+
+            setTimeout(() => {
+                flashEffectActive = false;
+                clearInterval(flashInterval);
+            }, 5000);
+        }
+        
+        function showGameOverScreen() {
+            gameState = 'GAME_OVER';
+            gameInfo.style.display = 'none';
+            gameOverScreen.style.display = 'flex';
+            finalScoreDisplay.innerText = `Son Puanınız: ${score}`;
+            
+            // Oyun bittiğinde müziği durdur
             if (backgroundMusic) {
                 backgroundMusic.pause();
-                backgroundMusic.currentTime = 0;
+            }
+        }
+        
+        function loseLife() {
+            // Can kaybettikçe ses çal
+            if (deathSound) {
+                deathSound.currentTime = 0;
+                deathSound.play();
             }
 
-            createPlatforms();
-            createClouds();
+            lives--;
+            drawLives();
+            if (lives <= 0) {
+                showGameOverScreen();
+            } else {
+                const lowestPlatform = platforms.reduce((min, p) => (p.y > min.y ? p : min), platforms[0]);
+                character.x = lowestPlatform.x + (lowestPlatform.width / 2) - (character.width / 2);
+                character.y = lowestPlatform.y - character.height;
+                character.velocityY = 0;
+                character.velocityX = 0;
+            }
+        }
+        
+        // --- Oyun Mantığı Güncelleme ---
+        function update() {
+            // Hız güçlendirmesi aktifse hızı ikiye katla
+            const moveSpeed = isSpeedBoostActive ? character.baseSpeed * 2 : character.baseSpeed;
+            
+            // --- Karakter ve Platform Güncelleme ---
+            character.x += character.velocityX * moveSpeed;
+            
+            // Mobil kontroller için
+            if (touchMoveDirection !== 0) {
+                character.x += touchMoveDirection * moveSpeed;
+            }
+
+            character.velocityY += character.gravity;
+            character.y += character.velocityY;
+
+            if (character.x < 0) character.x = 0;
+            if (character.x + character.width > GAME_WIDTH) character.x = GAME_WIDTH - character.width;
+
+            platforms.forEach(platform => {
+                if (character.velocityY > 0 &&
+                    character.y + character.height >= platform.y &&
+                    character.y + character.height <= platform.y + platform.height &&
+                    character.x + character.width > platform.x &&
+                    character.x < platform.x + platform.width) {
+                    
+                    if (character.isJumping) {
+                        // Puanlama mantığı kaldırıldı, artık platform kaydırıldığında puan kazanılacak
+                    }
+                    
+                    character.velocityY = 0;
+                    character.y = platform.y - character.height;
+                    character.isJumping = false;
+                }
+            });
+
+            if (character.y < GAME_HEIGHT / 4) {
+                const scrollSpeed = GAME_HEIGHT / 4 - character.y;
+                character.y += scrollSpeed;
+                
+                platforms.forEach(platform => {
+                    platform.y += scrollSpeed;
+                });
+                clouds.forEach(cloud => {
+                    cloud.y += scrollSpeed * 0.5;
+                });
+                balloons.forEach(balloon => {
+                    balloon.y += scrollSpeed;
+                });
+                mushrooms.forEach(mushroom => {
+                    mushroom.y += scrollSpeed;
+                });
+            }
+            
+            if (platforms.length > 0 && platforms[0].y > GAME_HEIGHT) {
+                platforms.shift();
+                // Puanlama mantığı buraya taşındı: her yeni platform geldiğinde puan artacak
+                score += 1;
+                if (score > 0 && score % 20 === 0 && score !== lastCelebrationScore) {
+                    showCelebrationMessage();
+                    lastCelebrationScore = score;
+                }
+                const lastPlatform = platforms[platforms.length - 1];
+                const newY = lastPlatform.y - Math.floor(Math.random() * (140 - 90 + 1) + 90);
+                const maxHorizontalJumpDistance = 200;
+                const minX = Math.max(0, lastPlatform.x - maxHorizontalJumpDistance);
+                const maxX = Math.min(GAME_WIDTH - 80, lastPlatform.x + maxHorizontalJumpDistance);
+                const newX = Math.random() * (maxX - minX) + minX;
+
+                platforms.push({ x: newX, y: newY, width: 80, height: 20 });
+            }
+            
+            if (clouds.length > 0 && clouds[0].y > GAME_HEIGHT) {
+                clouds.shift();
+                clouds.push({
+                    x: Math.random() * GAME_WIDTH,
+                    y: -100,
+                    width: Math.random() * 80 + 100,
+                    height: Math.random() * 40 + 40
+                });
+            }
+
+            if (character.y > GAME_HEIGHT) {
+                loseLife();
+            }
+
+            // --- Ejderha Güncelleme ---
+            if (score > 0 && score % 30 === 0 && score !== lastDragonSpawnScore) {
+                spawnDragon();
+            }
+            
+            for (let i = dragons.length - 1; i >= 0; i--) {
+                const dragon = dragons[i];
+                const elapsedTime = Date.now() - dragon.spawnTime;
+
+                if (elapsedTime > 5000 || dragon.y < -dragon.height) {
+                    dragons.splice(i, 1);
+                    continue;
+                }
+                
+                dragon.y += dragon.velocityY;
+
+                if (Date.now() - dragon.fireSpawnTimer > dragon.fireballSpawnDelay) {
+                     spawnFireball(dragon);
+                     dragon.fireSpawnTimer = Date.now();
+                     // Ejderhanın ateş topu püskürtme sıklığı iki katına çıkarıldı (gecikme yarıya indi)
+                     dragon.fireballSpawnDelay = Math.random() * 1000 + 750;
+                }
+            }
+
+            // --- Ateş Topu Güncelleme ve Çarpışma Kontrolü ---
+            for (let i = fireballs.length - 1; i >= 0; i--) {
+                const fireball = fireballs[i];
+                fireball.x += fireball.velocityX;
+                fireball.y += fireball.velocityY;
+                
+                if (fireball.y < -fireball.radius || fireball.x < -fireball.radius || fireball.x > GAME_WIDTH + fireball.radius) {
+                    fireballs.splice(i, 1);
+                    continue;
+                }
+                
+                const dist = Math.hypot((character.x + character.width/2) - fireball.x, (character.y + character.height/2) - fireball.y);
+                if (dist < character.width/2 + fireball.radius) {
+                    loseLife();
+                    fireballs.splice(i, 1);
+                }
+            }
+
+            // --- Balon Güncelleme (Hata Düzeltildi) ---
+            if (score > 0 && score % 50 === 0 && score !== lastBalloonsSpawnScore) {
+                spawnBalloons();
+                lastBalloonsSpawnScore = score; // Bu satır eklenerek hatanın tekrarlanması engellendi.
+            }
+            
+            for (let i = balloons.length - 1; i >= 0; i--) {
+                const balloon = balloons[i];
+                balloon.y += balloon.velocityY;
+                balloon.x += balloon.velocityX;
+                
+                if (balloon.y < -balloon.radius * 2) {
+                    balloons.splice(i, 1);
+                }
+            }
+            
+            // --- Mantar Güncelleme ---
+            if (score >= nextMushroomSpawnScore && score > lastMushroomSpawnScore) {
+                spawnMushroom();
+            }
+
+            for (let i = mushrooms.length - 1; i >= 0; i--) {
+                const mushroom = mushrooms[i];
+                mushroom.y += mushroom.velocityY;
+                
+                if (character.x < mushroom.x + mushroom.width &&
+                    character.x + character.width > mushroom.x &&
+                    character.y < mushroom.y + mushroom.height &&
+                    character.y + character.height > mushroom.y) {
+                    
+                    activatePowerUp();
+                    mushrooms.splice(i, 1);
+
+                    // Mantar alındığında ses çal
+                    if (mushroomSound) {
+                        mushroomSound.currentTime = 0;
+                        mushroomSound.play();
+                    }
+                }
+                
+                if (mushroom.y < -mushroom.height) {
+                    mushrooms.splice(i, 1);
+                }
+            }
+
+            // Havai fişek güncellemesi
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                const p = fireworks[i];
+                p.x += p.velocityX;
+                p.y += p.velocityY;
+                p.alpha -= 0.01;
+                p.velocityY += 0.05;
+                
+                if (p.alpha <= 0) {
+                    fireworks.splice(i, 1);
+                }
+            }
+        }
+        
+        // --- Oyun Döngüsü ---
+        function gameLoop() {
+            if (gameState !== 'PLAYING') {
+                return;
+            }
+            
+            drawBackground();
+            
+            update();
+            
+            drawBalloons();
+            drawMushroom();
+            drawPlatforms();
+            dragons.forEach(dragon => drawDragon(dragon));
+            drawFireballs();
+            drawCharacter();
+            drawScore();
+            drawLives();
+            drawFireworks();
+            
+            if (flashEffectActive) {
+                ctx.fillStyle = flashColors[flashColorIndex];
+                ctx.globalAlpha = 0.3;
+                ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+                ctx.globalAlpha = 1;
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // --- Karakter görselini yükleyen fonksiyon ---
+        function setCharacterImage(charKey) {
+            const charData = CHARACTERS[charKey];
+            character.image = new Image();
+
+            if (charKey === 'panda' || charKey === 'dragon' || charKey === 'koala') {
+                 character.image.src = 'data:image/svg+xml;base64,' + btoa(charData);
+            } else {
+                character.image.src = charData;
+            }
+            
+            character.image.onload = () => {
+                // Görsel yüklendiğinde geri sayımı başlat
+                startCountdown();
+            };
+            character.image.onerror = () => {
+                console.error(`Görsel yüklenemedi: ${charData}`);
+                // Hata durumunda bile devam et
+                startCountdown();
+            };
+        }
+
+        function initGame() {
+            score = 0;
+            lives = 3;
+            gameState = 'SELECT_CHARACTER';
+            character.velocityX = 0;
+            character.velocityY = 0;
+            lastDragonSpawnScore = 0;
+            lastBalloonsSpawnScore = 0;
+            lastCelebrationScore = 0;
+            lastMushroomSpawnScore = 0;
+            nextMushroomSpawnScore = Math.floor(Math.random() * 11) + 30;
+            isSpeedBoostActive = false;
+            flashEffectActive = false;
+            
             dragons = [];
             fireballs = [];
             balloons = [];
             mushrooms = [];
             fireworks = [];
             
-            drawLives();
-            drawScore();
+            // Sesleri yükle
+            loadSounds();
+            
+            createPlatforms();
+            createClouds();
+
+            // Tüm ekranları gizle, sadece karakter seçimi göster
+            hideAllScreens();
+            characterSelectScreen.style.display = 'flex';
         }
 
-        // --- Ekranları Gizleme Fonksiyonu ---
         function hideAllScreens() {
             characterSelectScreen.style.display = 'none';
             countdownScreen.style.display = 'none';
@@ -553,489 +976,62 @@
             gameInfo.style.display = 'none';
         }
 
-        // --- Görseli Çizme Fonksiyonu ---
-        function drawSVG(context, svgString, x, y, width, height) {
-            const DOMURL = window.URL || window.webkitURL || window;
-            const svg = new Blob([svgString], {
-                type: 'image/svg+xml'
-            });
-            const url = DOMURL.createObjectURL(svg);
-            const img = new Image();
-            img.onload = function() {
-                context.drawImage(img, x, y, width, height);
-                DOMURL.revokeObjectURL(url);
-            };
-            img.src = url;
-        }
-
-        // --- Oyun Nesnelerini Çizme Fonksiyonu ---
-        function draw() {
-            ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-            // Arka plan rengi
-            ctx.fillStyle = '#87CEEB';
-            ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-            // Bulutları çiz
-            clouds.forEach(cloud => {
-                drawSVG(ctx, CLOUD_SVG, cloud.x, cloud.y, cloud.width, cloud.height);
-            });
-
-            // Platformları çiz
-            platforms.forEach(platform => {
-                // Platformun üstüne şerit efekti
-                ctx.fillStyle = '#654321'; // Ekmek rengi
-                ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
-                ctx.fillStyle = '#ff694f'; // Sosis rengi
-                ctx.fillRect(platform.x, platform.y + 5, platform.width, platform.height / 2);
-                drawSVG(ctx, SAUSAGE_SVG, platform.x, platform.y, platform.width, platform.height);
-            });
-
-            // Balonları çiz
-            balloons.forEach(balloon => {
-                if (!balloon.isCollected) {
-                    ctx.fillStyle = 'pink';
-                    ctx.beginPath();
-                    ctx.arc(balloon.x + balloon.width / 2, balloon.y + balloon.height / 2, balloon.width / 2, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.strokeStyle = 'red';
-                    ctx.beginPath();
-                    ctx.moveTo(balloon.x + balloon.width / 2, balloon.y + balloon.height);
-                    ctx.lineTo(balloon.x + balloon.width / 2, balloon.y + balloon.height + 20);
-                    ctx.stroke();
-                }
-            });
-
-            // Mantarları çiz
-            mushrooms.forEach(mushroom => {
-                if (!mushroom.isCollected) {
-                    drawSVG(ctx, MUSHROOM_SVG, mushroom.x, mushroom.y, mushroom.width, mushroom.height);
-                }
-            });
-
-            // Ejderhaları çiz
-            dragons.forEach(dragon => {
-                // Ejderhayı çiz
-                drawSVG(ctx, DRAGON_SVG, dragon.x, dragon.y, dragon.width, dragon.height);
-            });
-
-            // Ateş toplarını çiz
-            fireballs.forEach(fireball => {
-                // Daha uzun ve profesyonel ateş animasyonu
-                drawSVG(ctx, FIRE_SVG(fireball.size), fireball.x, fireball.y, fireball.size, fireball.size);
-            });
-
-            // Karakteri çiz
-            if (character.image) {
-                // Hız artışı sırasında karakteri titreterek flash efekti uygula
-                if (flashEffectActive) {
-                    ctx.save();
-                    ctx.shadowColor = flashColors[flashColorIndex];
-                    ctx.shadowBlur = 15;
-                    ctx.drawImage(character.image, character.x, character.y, character.width, character.height);
-                    ctx.restore();
-                } else {
-                    ctx.drawImage(character.image, character.x, character.y, character.width, character.height);
-                }
-            }
-        }
-
-        // --- Oyun Döngüsü ---
-        function gameLoop() {
-            if (gameState !== 'PLAYING') return;
-
-            update();
-            draw();
-            drawFireworks(); // Havai fişekleri çiz
-            requestAnimationFrame(gameLoop);
-        }
-
-        // --- Oyun Mantığını Güncelleme Fonksiyonu ---
-        function update() {
-            // Karakterin hareketini güncelle
-            character.x += character.velocityX;
-            character.y += character.velocityY;
-            character.velocityY += character.gravity;
-
-            // Yan sınırlardan sekme
-            if (character.x < 0 || character.x + character.width > GAME_WIDTH) {
-                character.velocityX *= -1;
-            }
-
-            // Platformları yukarı kaydır
-            if (character.y < GAME_HEIGHT / 2) {
-                const scrollAmount = GAME_HEIGHT / 2 - character.y;
-                character.y = GAME_HEIGHT / 2;
-
-                platforms.forEach(platform => {
-                    platform.y += scrollAmount;
-                });
-                clouds.forEach(cloud => {
-                    cloud.y += scrollAmount * 0.5;
-                });
-                dragons.forEach(dragon => {
-                    dragon.y += scrollAmount;
-                });
-                fireballs.forEach(fireball => {
-                    fireball.y += scrollAmount;
-                });
-                balloons.forEach(balloon => {
-                    balloon.y += scrollAmount;
-                });
-                mushrooms.forEach(mushroom => {
-                    mushroom.y += scrollAmount;
-                });
-
-                // Yeni platformlar oluştur
-                let newPlatformY = platforms[platforms.length - 1].y;
-                while (newPlatformY < 0) {
-                    platforms.push({
-                        x: Math.random() * (GAME_WIDTH - 100),
-                        y: newPlatformY - 100,
-                        width: 100,
-                        height: 20
-                    });
-                    newPlatformY -= 100;
-                    score++;
-                    drawScore();
-                }
-                
-                // Skor 100 ve katı olduğunda kutlama mesajı göster
-                if (score > 0 && score % 100 === 0 && score !== lastCelebrationScore) {
-                    showCelebrationMessage();
-                    lastCelebrationScore = score;
-                }
-                // Skor 500 ve katlarında havai fişekleri patlat
-                if (score > 0 && score % 500 === 0) {
-                    for (let i = 0; i < 10; i++) {
-                        fireworks.push(new Firework());
-                    }
-                }
-            }
-
-            // Platform çarpışması
-            platforms.forEach(platform => {
-                if (
-                    character.velocityY > 0 &&
-                    character.x < platform.x + platform.width &&
-                    character.x + character.width > platform.x &&
-                    character.y + character.height > platform.y &&
-                    character.y + character.height < platform.y + platform.height
-                ) {
-                    character.velocityY = character.jumpStrength;
-                    character.isJumping = false;
-                }
-            });
-
-            // Oyuncunun ekranın altına düşmesini kontrol et
-            if (character.y > GAME_HEIGHT) {
-                lives--;
-                deathSound.play();
-                drawLives();
-                if (lives > 0) {
-                    // Hayat varsa, oyunu sıfırla ama karakteri ve puanı koru
-                    character.y = 0;
-                    character.velocityY = 0;
-                    createPlatforms();
-                } else {
-                    gameState = 'GAME_OVER';
-                    backgroundMusic.pause();
-                    backgroundMusic.currentTime = 0;
-                    hideAllScreens();
-                    gameOverScreen.style.display = 'flex';
-                    finalScoreDisplay.innerText = `Skorun: ${score}`;
-                }
-            }
-            
-            // Bulutları döngüye al
-            clouds = clouds.filter(cloud => cloud.y < GAME_HEIGHT);
-            while (clouds.length < 5) {
-                clouds.push({
-                    x: Math.random() * GAME_WIDTH,
-                    y: -50,
-                    width: Math.random() * 80 + 100,
-                    height: Math.random() * 40 + 40
-                });
-            }
-
-            // Ejderha ve ateş toplarını güncelle
-            if (score > 100 && score % 50 === 0 && score !== lastDragonSpawnScore) {
-                createDragons();
-                lastDragonSpawnScore = score;
-                dragonSound.play();
-            }
-
-            dragons.forEach(dragon => {
-                // Ejderha hareketini güncelle (oyuncuya doğru)
-                const direction = character.x > dragon.x ? 1 : -1;
-                dragon.x += dragon.speed * direction;
-
-                // Ejderha ateş topu fırlat
-                dragon.fireballTimer++;
-                if (dragon.fireballTimer >= dragon.fireballInterval) {
-                    fireballs.push({
-                        x: dragon.x + dragon.width / 2,
-                        y: dragon.y + dragon.height,
-                        size: 20,
-                        velocityY: 5,
-                        velocityX: 0
-                    });
-                    dragon.fireballTimer = 0;
-                    dragon.fireballInterval = 100 + Math.random() * 100;
-                }
-            });
-
-            // Ateş toplarını güncelle ve çarpışma kontrolü
-            fireballs = fireballs.filter(fireball => fireball.y < GAME_HEIGHT);
-            fireballs.forEach(fireball => {
-                fireball.y += fireball.velocityY;
-                if (
-                    character.x < fireball.x + fireball.size &&
-                    character.x + character.width > fireball.x &&
-                    character.y < fireball.y + fireball.size &&
-                    character.y + character.height > fireball.y
-                ) {
-                    lives--;
-                    deathSound.play();
-                    drawLives();
-                    fireball.y = GAME_HEIGHT + 1; // Ateş topunu ekran dışına taşı
-                    // Can biterse oyun biter
-                    if (lives <= 0) {
-                        gameState = 'GAME_OVER';
-                        backgroundMusic.pause();
-                        backgroundMusic.currentTime = 0;
-                        hideAllScreens();
-                        gameOverScreen.style.display = 'flex';
-                        finalScoreDisplay.innerText = `Skorun: ${score}`;
-                    } else {
-                        // Eğer hayatı varsa, bir saniyeliğine hız artışı ver ve flash efekti uygula
-                        character.velocityY = -20;
-                        isSpeedBoostActive = true;
-                        flashEffectActive = true;
-                        setTimeout(() => {
-                            isSpeedBoostActive = false;
-                            flashEffectActive = false;
-                        }, 1000);
-                    }
-                }
-            });
-
-            // Balonları güncelle
-            if (score > 200 && score % 100 === 0 && score !== lastBalloonsSpawnScore) {
-                createBalloons();
-                lastBalloonsSpawnScore = score;
-            }
-
-            balloons.forEach(balloon => {
-                if (
-                    !balloon.isCollected &&
-                    character.x < balloon.x + balloon.width &&
-                    character.x + character.width > balloon.x &&
-                    character.y < balloon.y + balloon.height &&
-                    character.y + character.height > balloon.y
-                ) {
-                    lives++;
-                    drawLives();
-                    balloon.isCollected = true;
-                    // Balon toplanınca havai fişek efekti
-                    for (let i = 0; i < 5; i++) {
-                        fireworks.push(new Firework(balloon.x, balloon.y, 5));
-                    }
-                }
-            });
-            balloons = balloons.filter(b => !b.isCollected && b.y < GAME_HEIGHT);
-
-            // Mantarları güncelle
-            if (score > nextMushroomSpawnScore && score % 10 !== 0) { // Skor belli bir seviyeye gelince ve her puan artışında kontrol et
-                createMushrooms();
-                lastMushroomSpawnScore = score;
-                nextMushroomSpawnScore = score + 150 + Math.floor(Math.random() * 100);
-            }
-
-            mushrooms.forEach(mushroom => {
-                if (
-                    !mushroom.isCollected &&
-                    character.x < mushroom.x + mushroom.width &&
-                    character.x + character.width > mushroom.x &&
-                    character.y < mushroom.y + mushroom.height &&
-                    character.y + character.height > mushroom.y
-                ) {
-                    score += 50;
-                    drawScore();
-                    mushroomSound.play();
-                    mushroom.isCollected = true;
-                    // Mantar toplanınca havai fişek efekti
-                    for (let i = 0; i < 5; i++) {
-                        fireworks.push(new Firework(mushroom.x, mushroom.y, 5));
-                    }
-                }
-            });
-            mushrooms = mushrooms.filter(m => !m.isCollected && m.y < GAME_HEIGHT);
-
-            // Havai fişekleri güncelle
-            fireworks.forEach(firework => firework.update());
-            fireworks = fireworks.filter(firework => firework.particles.length > 0);
-            
-            // Hız artışı aktifse karakter hızını artır
-            if (isSpeedBoostActive) {
-                character.baseSpeed = 6;
-                flashColorIndex = (flashColorIndex + 1) % flashColors.length;
-            } else {
-                character.baseSpeed = 3;
-            }
-        }
-
-        // --- Puanı Çizme Fonksiyonu ---
-        function drawScore() {
-            scoreDisplay.innerText = `Puan: ${score}`;
-        }
-
-        // --- Canları Çizme Fonksiyonu ---
-        function drawLives() {
-            livesContainer.innerHTML = '';
-            for (let i = 0; i < lives; i++) {
-                livesContainer.innerHTML += HEART_SVG;
-            }
-        }
-
-        // --- Kutlama Mesajı Gösterme Fonksiyonu ---
-        function showCelebrationMessage() {
-            celebrationMessage.style.display = 'block';
-            celebrationMessage.innerText = CELEBRATION_MESSAGES[Math.floor(Math.random() * CELEBRATION_MESSAGES.length)];
-            setTimeout(() => {
-                celebrationMessage.style.display = 'none';
-            }, 2000); // 2 saniye sonra mesajı gizle
-        }
-
-        // --- Havai Fişek Sınıfı ---
-        class Firework {
-            constructor(x = GAME_WIDTH / 2, y = GAME_HEIGHT / 2, size = 3) {
-                this.x = x;
-                this.y = y;
-                this.size = size;
-                this.hue = Math.random() * 360;
-                this.particles = [];
-                this.createParticles();
-            }
-
-            createParticles() {
-                for (let i = 0; i < 100; i++) {
-                    this.particles.push(new Particle(this.x, this.y, this.hue, this.size));
-                }
-            }
-
-            update() {
-                this.particles.forEach(particle => particle.update());
-                this.particles = this.particles.filter(particle => particle.alpha > 0);
-            }
-        }
-
-        // --- Parçacık Sınıfı ---
-        class Particle {
-            constructor(x, y, hue, size) {
-                this.x = x;
-                this.y = y;
-                this.size = size;
-                this.speed = Math.random() * 5 + 1;
-                this.angle = Math.random() * 2 * Math.PI;
-                this.velocityX = this.speed * Math.cos(this.angle);
-                this.velocityY = this.speed * Math.sin(this.angle);
-                this.alpha = 1;
-                this.friction = 0.99;
-                this.gravity = 0.05;
-                this.hue = hue;
-            }
-
-            update() {
-                this.velocityX *= this.friction;
-                this.velocityY *= this.friction;
-                this.velocityY += this.gravity;
-                this.x += this.velocityX;
-                this.y += this.velocityY;
-                this.alpha -= 0.01;
-            }
-        }
-
-        // --- Havai Fişekleri Çizme Fonksiyonu ---
-        function drawFireworks() {
-            fxCtx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-            fireworks.forEach(firework => {
-                firework.particles.forEach(particle => {
-                    fxCtx.save();
-                    fxCtx.globalAlpha = particle.alpha;
-                    fxCtx.fillStyle = `hsl(${particle.hue}, 100%, 50%)`;
-                    fxCtx.beginPath();
-                    fxCtx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-                    fxCtx.fill();
-                    fxCtx.restore();
-                });
-            });
-        }
-
-        // --- Karakter Görselini Ayarlama Fonksiyonu ---
-        function setCharacterImage(characterName) {
-            let svgString = CHARACTERS[characterName];
-            if (svgString.startsWith('<svg')) {
-                const DOMURL = window.URL || window.webkitURL || window;
-                const svg = new Blob([svgString], {
-                    type: 'image/svg+xml'
-                });
-                const url = DOMURL.createObjectURL(svg);
-                character.image = new Image();
-                character.image.onload = function() {
-                    DOMURL.revokeObjectURL(url);
-                    startCountdown();
-                };
-                character.image.src = url;
-            } else {
-                character.image = new Image();
-                character.image.onerror = function() {
-                    this.src = `https://placehold.co/${character.width}x${character.height}/000/FFF?text=${characterName}`;
-                    startCountdown();
-                };
-                character.image.src = svgString;
-            }
-        }
-
-        // --- Klavye ve Dokunmatik Kontrol Yönetimi ---
-        let keys = {};
-        document.addEventListener('keydown', (e) => {
-            keys[e.key] = true;
-            if (e.key === 'ArrowUp' && !character.isJumping) {
-                character.isJumping = true;
+        // --- Kontrol Olay Dinleyicileri ---
+        const handleLeft = () => { if (gameState === 'PLAYING') character.velocityX = -1; };
+        const handleRight = () => { if (gameState === 'PLAYING') character.velocityX = 1; };
+        const handleStop = () => { if (gameState === 'PLAYING') character.velocityX = 0; };
+        const handleJump = () => {
+            if (gameState === 'PLAYING' && !character.isJumping) {
                 character.velocityY = character.jumpStrength;
-            }
-        });
-        document.addEventListener('keyup', (e) => {
-            keys[e.key] = false;
-        });
-
-        // Kontrolleri güncelleme fonksiyonu
-        function handleControls() {
-            character.velocityX = 0;
-            if (keys['ArrowLeft'] || touchMoveDirection === -1) {
-                character.velocityX = -character.baseSpeed;
-            }
-            if (keys['ArrowRight'] || touchMoveDirection === 1) {
-                character.velocityX = character.baseSpeed;
-            }
-            if (keys['ArrowUp'] && !character.isJumping) {
                 character.isJumping = true;
-                character.velocityY = character.jumpStrength;
             }
-        }
+        };
+
+        // Mobil tuşlar
+        leftButton.addEventListener('mousedown', () => { touchMoveDirection = -1; });
+        leftButton.addEventListener('mouseup', () => { touchMoveDirection = 0; });
+        leftButton.addEventListener('mouseleave', () => { touchMoveDirection = 0; });
+        leftButton.addEventListener('touchstart', (e) => { e.preventDefault(); touchMoveDirection = -1; }, { passive: false });
+        leftButton.addEventListener('touchend', () => { touchMoveDirection = 0; });
+
+        rightButton.addEventListener('mousedown', () => { touchMoveDirection = 1; });
+        rightButton.addEventListener('mouseup', () => { touchMoveDirection = 0; });
+        rightButton.addEventListener('mouseleave', () => { touchMoveDirection = 0; });
+        rightButton.addEventListener('touchstart', (e) => { e.preventDefault(); touchMoveDirection = 1; }, { passive: false });
+        rightButton.addEventListener('touchend', () => { touchMoveDirection = 0; });
         
-        // Mobil dokunmatik kontroller
-        leftButton.addEventListener('touchstart', (e) => { e.preventDefault(); touchMoveDirection = -1; });
-        leftButton.addEventListener('touchend', (e) => { e.preventDefault(); touchMoveDirection = 0; });
-        rightButton.addEventListener('touchstart', (e) => { e.preventDefault(); touchMoveDirection = 1; });
-        rightButton.addEventListener('touchend', (e) => { e.preventDefault(); touchMoveDirection = 0; });
-        jumpButton.addEventListener('touchstart', (e) => { e.preventDefault(); character.isJumping = true; character.velocityY = character.jumpStrength; });
+        jumpButton.addEventListener('click', handleJump);
+        jumpButton.addEventListener('touchstart', (e) => { e.preventDefault(); handleJump(); }, { passive: false });
+        
+        // Klavye tuşları
+        document.addEventListener('keydown', (e) => {
+            if (gameState !== 'PLAYING') return;
+            switch (e.code) {
+                case 'ArrowLeft':
+                    character.velocityX = -1;
+                    break;
+                case 'ArrowRight':
+                    character.velocityX = 1;
+                    break;
+                case 'ArrowUp':
+                case 'Space':
+                    handleJump();
+                    break;
+            }
+        });
 
-        // --- Oyun Başlangıç ve Menü Yönetimi ---
+        document.addEventListener('keyup', (e) => {
+            if (gameState !== 'PLAYING') return;
+            switch (e.code) {
+                case 'ArrowLeft':
+                case 'ArrowRight':
+                    character.velocityX = 0;
+                    break;
+            }
+        });
+
+        // --- Karakter Seçim ve Oyun Başlatma Mantığı ---
         let selectedCharacter = null;
-        loadSounds();
-
         characterCards.forEach(card => {
             card.addEventListener('click', () => {
                 characterCards.forEach(c => c.classList.remove('selected'));
